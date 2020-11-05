@@ -1,2 +1,5 @@
 *.o
-
+bd/
+build/
+list/
+logs/

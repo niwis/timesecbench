@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Embench
  * -----
- * Last Modified: Wednesday, 4th November 2020 5:01:53 pm
+ * Last Modified: Thursday, 5th November 2020 9:55:52 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -16,8 +16,12 @@
 //INPUT_SYMBOLS and OUTPUT_SYMBOLS must be defined in a benchmark file (both unsigned integers).
 
 void benchmark() {
-   for(unsigned int o = 0; o < OUTPUT_SYMBOLS; o++) {
-      for(unsigned int i = 0; i < INPUT_SYMBOLS; i++) {
+
+   unsigned int ic = get_input_symbols_count();
+   unsigned int oc = get_output_symbols_count();
+
+   for(unsigned int o = 0; o < oc; o++) {
+      for(unsigned int i = 0; i < ic; i++) {
          prepare_trojan();
          trojan(i);
 

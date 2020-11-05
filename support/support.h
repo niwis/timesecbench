@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Embench
  * -----
- * Last Modified: Wednesday, 4th November 2020 5:03:09 pm
+ * Last Modified: Thursday, 5th November 2020 10:25:53 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -19,9 +19,13 @@
 
 /* Include board support header if we have one */
 
-#ifdef HAVE_BOARDSUPPORT_H
+// #ifdef HAVE_BOARDSUPPORT_H
 #include "boardsupport.h"
-#endif
+// #endif
+
+// #ifdef HAVE_CHIPSUPPORT_H
+#include "chipsupport.h"
+// #endif
 
 
 /* Standard functions implemented for each board */
@@ -65,11 +69,14 @@ void trojan (unsigned int input);
 */
 unsigned int spy(unsigned int output);
 
-/*
-   Read the timer value.
-*/
-volatile unsigned int read_time(void) __attribute__((always_inline));
+// /*
+//    Read the timer value.
+// */
+// volatile inline unsigned int read_time(void);// __attribute__((always_inline));
 
+
+unsigned int get_input_symbols_count();
+unsigned int get_output_symbols_count();
 
 #endif /* SUPPORT_H */
 
