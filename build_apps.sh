@@ -15,7 +15,8 @@ rm -rf list bd
 mkdir -p $HEX_DIR
 mkdir -p list
 
-./build_all.py --arch riscv32 --chip aubrac --board aubrac --cc riscv32-inria-elf-gcc --cflags="-c -march=rv32im -mabi=ilp32 -O2 -ffunction-sections -fdata-sections" --ld riscv32-inria-elf-gcc --ldflags="-Wl,-gc-sections,-T,${ROOT_PATH}/config/riscv32/boards/aubrac/script-riscv32.ld" --user-libs="-lm" --clean
+# ./build_all.py --arch riscv32 --chip aubrac --board aubrac --cc riscv32-inria-elf-gcc --cflags="-c -march=rv32im -mabi=ilp32 -O2 -ffunction-sections -fdata-sections" --ld riscv32-inria-elf-gcc --ldflags="-Wl,-gc-sections,-T,${ROOT_PATH}/config/riscv32/boards/aubrac/script-riscv32.ld" --user-libs="-lm" --clean
+./build_all.py --arch riscv32 --chip aubrac --board aubrac --ldflags="-Wl,-gc-sections,-T,${ROOT_PATH}/config/riscv32/boards/aubrac/script-riscv32.ld" --clean
 
 for test in $TESTS; do
 	rm $HEX_DIR/${test}.hex 2> /dev/null
