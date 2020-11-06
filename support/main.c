@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Embench
  * -----
- * Last Modified: Thursday, 5th November 2020 9:55:52 am
+ * Last Modified: Friday, 6th November 2020 10:22:17 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -42,6 +42,7 @@ main (int argc __attribute__ ((unused)),
    initialise_benchmark ();
 
    benchmark ();
+   end_benchmark();
   
    return 0;
 }				/* main () */

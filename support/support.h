@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Embench
  * -----
- * Last Modified: Thursday, 5th November 2020 10:25:53 am
+ * Last Modified: Friday, 6th November 2020 10:33:22 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -48,6 +48,14 @@ This function is used to communicate one result. It is called multiple times per
 Must be implemented by the board support.
 */
 void transmit(unsigned int input, unsigned int output, unsigned int timing);
+
+/*
+Call this function to denote the end of the benchmark (required since the number of transmit() call is variable).
+*/
+void end_benchmark(void);
+
+
+void security_domain_switch(unsigned int domain_id);
 
 /*
    Set the chip state before the trojan transmission.

@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Thursday, 5th November 2020 11:41:13 am
+ * Last Modified: Friday, 6th November 2020 11:55:50 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -39,16 +39,21 @@ volatile uint32_t spy(uint32_t o) {
 }
 
 void prepare_trojan() {
+    security_domain_switch(0);
+
+    uint32_t start_add = D_SETS * D_WAYS;
+
     // to prepare trojan, we must touch memory someplaces never touched by trojan as to fill the cache
     for (uint32_t w = 0; w < D_WAYS; w++) {
         for (uint32_t s = 0; s < D_SETS; s++) {
-            touch_l1d_add((void*)(D_LAST_LINE - s - w*D_SETS));
+            // touch_l1d_add((void*)(D_LAST_LINE - s - w*D_SETS));
+            touch_l1d_add((void*)(D_LINE_SIZE * (start_add + s + w*D_SETS)));
         }
     }
 }
 
 void prepare_spy() {
-    
+    security_domain_switch(1);
 }
 
 void initialise_benchmark() {
