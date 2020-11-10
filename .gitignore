@@ -3,3 +3,4 @@ bd/
 build/
 list/
 logs/
+*.pyc
