@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Friday, 6th November 2020 11:55:50 am
+ * Last Modified: Friday, 13th November 2020 2:41:11 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -19,7 +19,9 @@ uint32_t touch_l1d_add(ADDRESS address) {
     return  *((uint32_t volatile*)address);
 }
 
-volatile uint32_t poke_l1d_add(ADDRESS address) {
+
+
+__attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) volatile uint32_t poke_l1d_add(ADDRESS address) {
     uint32_t start = read_time();
     touch_l1d_add(address);
     uint32_t end = read_time();
