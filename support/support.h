@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Embench
  * -----
- * Last Modified: Friday, 6th November 2020 10:33:22 am
+ * Last Modified: Tuesday, 24th November 2020 3:23:39 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -49,13 +49,22 @@ Must be implemented by the board support.
 */
 void transmit(unsigned int input, unsigned int output, unsigned int timing);
 
+
+
 /*
 Call this function to denote the end of the benchmark (required since the number of transmit() call is variable).
 */
 void end_benchmark(void);
 
+/*
+For chip that include support for hardware security domains.
+*/
+inline void security_domain_switch(unsigned int domain_id);
 
-void security_domain_switch(unsigned int domain_id);
+/*
+A fence that ensure that modified data are reflected in the fetched instructions
+*/
+inline void instructions_fence(void);
 
 /*
    Set the chip state before the trojan transmission.
@@ -85,6 +94,8 @@ unsigned int spy(unsigned int output);
 
 unsigned int get_input_symbols_count();
 unsigned int get_output_symbols_count();
+
+
 
 #endif /* SUPPORT_H */
 

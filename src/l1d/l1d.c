@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Friday, 13th November 2020 3:45:32 pm
+ * Last Modified: Tuesday, 24th November 2020 3:26:32 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -21,7 +21,7 @@ uint32_t touch_l1d_add(ADDRESS address) {
 
 
 //Alignement is required for precise time measurement: we do not want the fetch to interfere.
- __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) volatile uint32_t poke_l1d_add(ADDRESS address) {
+__attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) volatile uint32_t poke_l1d_add(ADDRESS address) {
     uint32_t start = read_time();
     touch_l1d_add(address);
     uint32_t end = read_time();
