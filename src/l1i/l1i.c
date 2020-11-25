@@ -4,7 +4,7 @@
  * Created Date: Tuesday November 24th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Tuesday, 24th November 2020 3:38:10 pm
+ * Last Modified: Wednesday, 25th November 2020 2:29:57 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -18,15 +18,12 @@ void prime_l1i() {
     // 1 - fill an empty region of memory with ret instructions (0x00008067), that can be used to fill (one line per set) the cache
     // 2 - fill the L1I cache with the instructions in this memory area
 
-    // uint32_t add = I_LAST_LINE_ADD;
-    // uint32_t end_add = I_LAST_LINE_ADD - (I_SETS * I_WAYS * I_LINE_SIZE);
-
     uint32_t add = RET_ARR2;
     uint32_t end_add = RET_ARR2 + L1I_SIZE;
 
     //first write rets
     while (add < end_add) {
-        write_u32((void*)add, RET_INST);
+        write_u32((void*)add, RET_OPCODE);
         add += I_LINE_SIZE;
     }
 
