@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Wednesday, 25th November 2020 5:00:16 pm
+ * Last Modified: Thursday, 26th November 2020 10:23:26 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -13,25 +13,9 @@
 #include "support.h"
 #include "bht.h"
 
-// the training gadget is an array of "blt a0, a1, 4" instructions (size = BHT_ENTRIES), terminating with a "ret" instruction.
-// if we execute one instruction, all the following will be executed successively (offset = 4)
-volatile void write_training_gadget() {
-    //write branches
-    //the branch result (go to next instruction) is the same whether or not the condition (a0 < a1) is taken or not.
-    uint32_t bl4_opcode = BLT01_OPCODE | encode_branch_offset(4);// "blt a0, a1, 4"
-
-    for(uint32_t i = 0; i < BHT_ENTRIES; i++) {
-        volatile uint32_t* add = &(((uint32_t*)WORK_ADD1)[i]);
-        *add = bl4_opcode; // "blt a0, a1, 4"
-    }
-
-    //write ret at the end
-    volatile uint32_t* add =  &(((uint32_t*)WORK_ADD1)[BHT_ENTRIES]);
-    *add = RET_OPCODE;
-}
 
 // the poking gadget is an array of "blt a0, a1, [gadget_end]" (size = BHT_ENTRIES), terminating with a ret
-// if we execute one instruction, it will be the only branch to be taken if the condition is met.
+// if we execute one instruction, it will be the only branch to be taken if the condition is met, or all successive branches will be taken if not met.
 volatile void write_poking_gadget() {
     //write ret at the end
     uint32_t* ret_add = &(((uint32_t*)WORK_ADD2)[BHT_ENTRIES]);
@@ -48,18 +32,17 @@ volatile void write_poking_gadget() {
 }
 
 //assume training gadget has been written
-//init bht with "not taken" condition: "blt a0=2, a1=1, 4"
+//init bht with "not taken" condition: "blt a0=2, a1=1, [end]"
 void init_nottaken_bht(uint32_t nb_passes) {    
 
-    sig_br* start_branch = (sig_br*)WORK_ADD1;
+    sig_br* start_branch = (sig_br*)WORK_ADD2;
 
     //take the branches
     for(uint32_t i = 0; i < nb_passes; i++) {
         start_branch(2, 1);
         // return here after all branches from the training gadget have been taken.
-        // we do not iterate on the bht entries since all branches instructions in the gadget will be taken successively
+        // we do not iterate on the bht entries since all branches instructions in the gadget will be taken successively (condition not met)
     }
-    
 }
 
 
@@ -102,7 +85,6 @@ void prepare_spy() {
 }
 
 void initialise_benchmark() {
-    write_training_gadget();
     write_poking_gadget();
 }
 

@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Embench
  * -----
- * Last Modified: Friday, 6th November 2020 10:22:17 am
+ * Last Modified: Thursday, 26th November 2020 10:24:10 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -20,8 +20,8 @@ void benchmark() {
    unsigned int ic = get_input_symbols_count();
    unsigned int oc = get_output_symbols_count();
 
-   for(unsigned int o = 0; o < oc; o++) {
-      for(unsigned int i = 0; i < ic; i++) {
+   for(unsigned int i = 0; i < ic; i++) {
+      for(unsigned int o = 0; o < oc; o++) {
          prepare_trojan();
          trojan(i);
 
