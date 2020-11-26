@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Friday, 6th November 2020 10:18:53 am
+ * Last Modified: Thursday, 26th November 2020 2:12:00 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -25,6 +25,7 @@ volatile void transmit(uint32_t i, uint32_t o, uint32_t timing) {
                     "mv t4, %[o]\n"
                     "mv t3, %[timing]\n"
                     "li t6, 0x101010\n"  //trigger signal
+                    "fence.i\n"
                     "li t6, 0x0\n"  //trigger signal
                     : //output
                     : [i] "r" (i), [o] "r" (o), [timing] "r" (timing)//input
@@ -37,6 +38,7 @@ volatile void end_benchmark() {
                     "li t4, 0xffffffff\n" 
                     "li t3, 0xffffffff\n"  
                     "li t6, 0x101010\n"//trigger signal
+                    "fence.i\n"
                     "li t6, 0x0\n"  //trigger signal
                     : : : );
 }

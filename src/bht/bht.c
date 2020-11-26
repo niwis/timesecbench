@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Thursday, 26th November 2020 10:23:26 am
+ * Last Modified: Thursday, 26th November 2020 11:33:22 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -14,9 +14,9 @@
 #include "bht.h"
 
 
-// the poking gadget is an array of "blt a0, a1, [gadget_end]" (size = BHT_ENTRIES), terminating with a ret
+// the training gadget is an array of "blt a0, a1, [gadget_end]" (size = BHT_ENTRIES), terminating with a ret
 // if we execute one instruction, it will be the only branch to be taken if the condition is met, or all successive branches will be taken if not met.
-volatile void write_poking_gadget() {
+volatile void write_training_gadget() {
     //write ret at the end
     uint32_t* ret_add = &(((uint32_t*)WORK_ADD2)[BHT_ENTRIES]);
     *ret_add = RET_OPCODE;
@@ -85,7 +85,7 @@ void prepare_spy() {
 }
 
 void initialise_benchmark() {
-    write_poking_gadget();
+    write_training_gadget();
 }
 
 uint32_t get_input_symbols_count() {

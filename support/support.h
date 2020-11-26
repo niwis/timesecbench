@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Embench
  * -----
- * Last Modified: Tuesday, 24th November 2020 3:23:39 pm
+ * Last Modified: Thursday, 26th November 2020 2:02:17 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -59,12 +59,12 @@ void end_benchmark(void);
 /*
 For chip that include support for hardware security domains.
 */
-inline void security_domain_switch(unsigned int domain_id);
+void security_domain_switch(unsigned int domain_id);
 
 /*
 A fence that ensure that modified data are reflected in the fetched instructions
 */
-inline void instructions_fence(void);
+void instructions_fence(void);
 
 /*
    Set the chip state before the trojan transmission.
