@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Thursday, 26th November 2020 11:33:22 am
+ * Last Modified: Tuesday, 8th December 2020 10:30:03 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -54,6 +54,8 @@ void touch_taken_bht(uint32_t i) {
 //Alignement is required for precise time measurement: we do not want the fetch to interfere.
 __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) uint32_t poke_taken_bht(uint32_t i) {
     sig_br* touch_branch = (sig_br*) &(((uint32_t*)WORK_ADD2)[i]);
+    *((uint32_t*)WORK_ADD1) = ((uint32_t*)touch_branch); // write it somewhere to trigger the addresses computation before the rdtime
+    // instructions_fence();
 
     uint32_t start = read_time();
     touch_branch(1, 2);
