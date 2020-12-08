@@ -4,7 +4,7 @@
  * Created Date: Thursday November 26th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Thursday, 26th November 2020 2:03:17 pm
+ * Last Modified: Thursday, 26th November 2020 4:33:42 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -118,7 +118,7 @@ volatile uint32_t spy(uint32_t o) {
 
 void prepare_trojan() {
     security_domain_switch(0);
-    init_btb(2);
+    init_btb(1);
 }
 
 void prepare_spy() {
