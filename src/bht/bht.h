@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Thursday, 26th November 2020 11:33:02 am
+ * Last Modified: Tuesday, 2nd March 2021 4:47:33 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -24,6 +24,12 @@
 typedef unsigned int uint32_t;
 typedef void volatile* ADDRESS;
 typedef volatile void sig_br(uint32_t rs1, uint32_t rs2);
+
+// A structure of the size the number of bht entries + 1 (for last return instruction) where we can easily write instructions
+typedef volatile struct {
+    uint32_t entries[BHT_ENTRIES+1];
+} __attribute__ ((aligned (BHT_ENTRIES)))
+bht_work_area;
 
 volatile void write_training_gadget();
 volatile void init_nottaken_bht(uint32_t nb_passes);

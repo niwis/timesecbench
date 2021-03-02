@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Embench
  * -----
- * Last Modified: Thursday, 26th November 2020 2:02:17 pm
+ * Last Modified: Monday, 1st March 2021 4:42:28 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -16,6 +16,8 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+
+#define REPETITION_FACTOR 1
 
 /* Include board support header if we have one */
 

@@ -4,7 +4,7 @@
  * Created Date: Tuesday November 24th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Wednesday, 25th November 2020 2:18:59 pm
+ * Last Modified: Tuesday, 2nd March 2021 4:19:24 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -20,12 +20,17 @@
 // - WORK_ADD1
 // - WORK_ADD2
 
+#define L1I_WORD_COUNT (L1I_SIZE/sizeof(uint32_t))
+
 typedef unsigned int uint32_t;
 typedef void volatile* ADDRESS;
 typedef void sig_fun(void);
 
-#define RET_ARR1 WORK_ADD1
-#define RET_ARR2 WORK_ADD2
+// A structure of the size of L1I where we can easily write instructions
+typedef volatile struct {
+    uint32_t returns[L1I_WORD_COUNT];
+} __attribute__ ((aligned (I_LINE_SIZE)))
+l1i_work_area;
 
 volatile void prime_l1i(void);
 volatile inline void touch_l1i_add(sig_fun* add);

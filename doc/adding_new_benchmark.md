@@ -3,7 +3,7 @@
 The TimeSecBench benchmarks are all built on the same model: measuring a channel matrix for a covert channel.
 For *i* an input symbol and *o* an output symbol, the **trojan** sends *i* over the channel and we measure the timing for the **spy** trying to read *o*.
 
-A timing dependency will show in the resulting channel matrix, proving the information leakage.
+A timing dependency will show in the resulting channel matrix, proving the information leakage if any.
 
 Adding a new benchmark requires to implement the following functions:
 - *void initialise_benchmark (void)*, called once per benchmark.
