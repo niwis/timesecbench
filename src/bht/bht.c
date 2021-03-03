@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Tuesday, 2nd March 2021 4:44:04 pm
+ * Last Modified: Wednesday, 3rd March 2021 11:19:00 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -27,6 +27,7 @@ volatile void write_training_gadget() {
 
     for(uint32_t i = 0; i < BHT_ENTRIES; i++) {
         uint32_t offset = &area1.entries[BHT_ENTRIES] - &area1.entries[i];
+        // uint32_t offset = (BHT_ENTRIES - i);//*4;
         offset <<= 2;
         
         area1.entries[i] = off0_val | encode_branch_offset(offset);
