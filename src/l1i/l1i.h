@@ -4,7 +4,7 @@
  * Created Date: Tuesday November 24th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Tuesday, 2nd March 2021 4:19:24 pm
+ * Last Modified: Wednesday, 3rd March 2021 11:43:58 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -17,8 +17,7 @@
 // - I_SETS
 // - RET_INST
 // - I_LINE_SIZE
-// - WORK_ADD1
-// - WORK_ADD2
+// - L1I_SIZE
 
 #define L1I_WORD_COUNT (L1I_SIZE/sizeof(uint32_t))
 

@@ -4,7 +4,7 @@
  * Created Date: Thursday November 26th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Thursday, 26th November 2020 4:33:42 pm
+ * Last Modified: Wednesday, 3rd March 2021 4:17:32 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -12,6 +12,8 @@
 
 #include "support.h"
 #include "btb.h"
+
+btb_work_area area;
 
 // save the opcode for easy rewritings
 uint32_t zero_jumps[BTB_ENTRIES];
@@ -30,26 +32,24 @@ __attribute__ ((noinline)) volatile uint32_t ret_one() {
 volatile void write_training_gadget() {
    
     //write ret at the end
-    uint32_t* ret_add = &(((uint32_t*)WORK_ADD2)[BTB_ENTRIES]);
-    *ret_add = RET_OPCODE;
-
+    area.entries[BTB_ENTRIES] = RET_OPCODE;
     
     uint32_t ret_zero_add = ((uint32_t) ret_zero);
     uint32_t ret_one_add = ((uint32_t) ret_one);
 
     for(uint32_t i = 0; i < BTB_ENTRIES; i++) {
-        uint32_t* jadd = &(((uint32_t*)WORK_ADD2)[i]);
+        uint32_t* jadd = &(area.entries[i]);
         zero_jumps[i] = J_OPCODE | encode_jump_offset(ret_zero_add - (uint32_t)jadd);
         one_jumps[i]  = J_OPCODE | encode_jump_offset(ret_one_add - (uint32_t)jadd);
 
-        // *jadd = zero_jumps[i]; // not necessarily
+        // *jadd = zero_jumps[i]; // not necessary here
     }
 }
 
 void init_btb(uint32_t passes) {
     //1 - rewrite "j ret_zero" everywhere
     for(uint32_t i = 0; i < BTB_ENTRIES; i++) {
-        uint32_t* callsite = (uint32_t*) &(((uint32_t*)WORK_ADD2)[i]);
+        uint32_t* callsite = (uint32_t*) &(area.entries[i]);
         *callsite = zero_jumps[i];
     }
 
@@ -57,7 +57,7 @@ void init_btb(uint32_t passes) {
     for(uint32_t p = 0; p < passes; p++) {
 
         for(uint32_t i = 0; i < BTB_ENTRIES; i++) {
-            sig_jump* j = (sig_jump*)  &(((uint32_t*)WORK_ADD2)[i]);
+            sig_jump* j = (sig_jump*)  &(area.entries[i]);
             j();
         }
 
@@ -69,7 +69,7 @@ void init_btb(uint32_t passes) {
 
 void touch_one_btb(uint32_t i) {
     //1 - rewrite "j ret_one"
-    volatile uint32_t* touch_add = &(((uint32_t*)WORK_ADD2)[i]);
+    volatile uint32_t* touch_add = &(area.entries[i]);
     *touch_add = one_jumps[i];
     instructions_fence();
 
@@ -85,7 +85,7 @@ void touch_one_btb(uint32_t i) {
 //Alignement is required for precise time measurement: we do not want the fetch to interfere.
 __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) uint32_t poke_one_btb(uint32_t i) {
     // volatile uint32_t* address = (uint32_t*)((uint32_t)training_btb) + (i << 2);
-    volatile uint32_t* address = &(((uint32_t*)WORK_ADD2)[i]);
+    volatile uint32_t* address = &(area.entries[i]);
 
     //1 - rewrite "j ret_one"
     *address = one_jumps[i];

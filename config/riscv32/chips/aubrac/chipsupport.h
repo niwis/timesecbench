@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Wednesday, 3rd March 2021 11:29:04 am
+ * Last Modified: Wednesday, 3rd March 2021 11:44:14 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -17,10 +17,6 @@
 
 // Global
 #define RAM_SIZE 8192
-
-#define WORK_SIZE 0x400  // max (L1I_SIZE, L1D, SIZE, BHT_ENTRIES*4+4, BTB_ENTRIES*4)
-#define WORK_ADD1 0x1400 //somewhere where memory is free and available between this add and add + 2 * worksize
-#define WORK_ADD2 (WORK_ADD1 + WORK_SIZE)
 
 // L1D dimensions
 //l1d assumes RAM size >= 2*L1D size
