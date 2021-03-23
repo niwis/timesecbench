@@ -532,7 +532,7 @@ def compile_support():
 
     # Compile each general support file in the benchmark
     # succeeded &= compile_file('beebsc', gp['supportdir'], gp['bd_supportdir'])
-    succeeded &= compile_file('main_st', gp['supportdir'], gp['bd_supportdir'])
+    succeeded &= compile_file('main', gp['supportdir'], gp['bd_supportdir'])
 
     # Compile dummy files that are needed
     for dlib in gp['dummy_libs']:
@@ -606,7 +606,7 @@ def create_link_binlist(abs_bd):
 
     # Add generic support
     # for supp in ['main.o', 'beebsc.o']:
-    for supp in ['main_st.o']:
+    for supp in ['main.o']:
         binf = os.path.join(gp['bd_supportdir'], supp)
         if os.path.isfile(binf):
             binlist.extend(gp['ld_input_pattern'].format(binf).split())

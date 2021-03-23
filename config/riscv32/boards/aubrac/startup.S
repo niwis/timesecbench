@@ -7,6 +7,12 @@ entry:
   la    sp, __stack_top
   j _start
 
+
+
+
+
+  
+
 .globl dome_switch_in_place
 dome_switch_in_place:
   csrrw x0, domenextid, a0
