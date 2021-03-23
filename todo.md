@@ -1,11 +1,11 @@
 Todo for a first public release:
 
-[x] Multiple executions to smooth results.
-[ ] Multithreaded benchmarks.
-[ ] Timing measure: channel capacity (or approximation of).
-[x] Proper allocation for work_add.
+- [x] Multiple executions to smooth results.
+- [ ] Multithreaded benchmarks.
+- [ ] Timing measure: channel capacity (or approximation of).
+- [x] Proper allocation for work_add.
 
 Other possible features:
 
-[ ] Measure the timing overhead.
-[ ] Autonomous script for Aubrac/Salers as an example.
+- [ ] Measure the timing overhead.
+- [ ] Autonomous script for Aubrac/Salers as an example.

@@ -1,6 +1,6 @@
 # TimeSecBench
 
-** Alpha stage: not ready for production. Use it at your own risks. **
+**Alpha stage: not ready for production. Use it at your own risks.**
 
 A benchmark suite to evaluate timing side-channels, built after [Embench](https://github.com/embench/embench-iot).
 
