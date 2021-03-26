@@ -25,4 +25,3 @@ The following benchmarks have been implemented.
 
 The usage is similar to the [Embench](https://github.com/embench/embench-iot) suite.
 
-The communication of the results is done with the help of the *transmit* method implemented by the [board support](./config/boards).

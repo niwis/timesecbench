@@ -1,6 +1,6 @@
-Todo for a first public release:
+Todo for a first release:
 
-- [x] Multiple executions to smooth results.
+- [ ] Multiple executions to smooth results.
 - [ ] Multithreaded benchmarks.
 - [ ] Timing measure: channel capacity (or approximation of).
 - [x] Proper allocation for work_add.
