@@ -24,4 +24,8 @@ The following benchmarks have been implemented.
 ## Usage
 
 The usage is similar to the [Embench](https://github.com/embench/embench-iot) suite.
+Details are provided in the [docs](./docs) folder:
+ - How to add a new [chip](./docs/adding_new_chip.md)
+ - How to add a new [board](./docs/adding_new_board.md)
+ - How to add a new [benchmark](./docs/adding_new_benchmark.md)
 
