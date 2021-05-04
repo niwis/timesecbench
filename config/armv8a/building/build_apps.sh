@@ -2,27 +2,20 @@
 #!nix-shell --pure -i bash
 
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-HEX_DIR="$SCRIPTPATH/../../verilator/timesecbench/hex"
+BIN_DIR="$SCRIPTPATH/bin"
 
-ROOT_PATH="$(realpath "$SCRIPTPATH/timesecbench")"
-ELF2HEX_DIR="$(realpath "$ROOT_PATH/tools/elf2hex")"
+ROOT_PATH="$(realpath "$SCRIPTPATH/../../..")"
 
-TESTS="l1d	\
-		l1i \
-		bht \
-		btb"
+# TESTS="l1d	\
+# 		l1i \
+# 		bht \
+# 		btb"
+
+TESTS="l1d"
 
 cd $SCRIPTPATH
 
-rm -rf $ROOT_PATH/list $ROOT_PATH/bd
-mkdir -p $HEX_DIR
-mkdir -p $ROOT_PATH/list
+mkdir -p $BIN_DIR
 
-# ./build_all.py --arch riscv32 --chip aubrac --board aubrac --cc riscv32-inria-elf-gcc --cflags="-c -march=rv32im -mabi=ilp32 -O2 -ffunction-sections -fdata-sections" --ld riscv32-inria-elf-gcc --ldflags="-Wl,-gc-sections,-T,${ROOT_PATH}/config/riscv32/boards/aubrac/script-riscv32.ld" --user-libs="-lm" --clean
-python3 $ROOT_PATH/build_all.py --arch riscv32 --chip aubrac --board aubrac --ldflags="-Wl,-gc-sections,-T,${ROOT_PATH}/config/riscv32/boards/aubrac/script-riscv32.ld" --clean
+python3 $ROOT_PATH/build_all.py --arch armv8a --chip bcm2837 --board rpi3 --clean
 
-for test in $TESTS; do
-	rm $HEX_DIR/${test}.hex 2> /dev/null
-	python3 ${ELF2HEX_DIR}/elf2hex.py --input $ROOT_PATH/bd/src/$test/$test --output $HEX_DIR/$test.hex --wide 16
-	riscv32-inria-elf-objdump -D $ROOT_PATH/bd/src/$test/$test > $ROOT_PATH/list/$test.list
-done
