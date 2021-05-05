@@ -13,9 +13,9 @@
 #include "chipsupport.h"
 
 void security_domain_switch(unsigned int domain_id) {
-    dome_switch_in_place(domain_id);
+    
 }
 
 void instructions_fence(void) {
-    asm("fence.i" : : : "memory");
+    // asm("fence.i" : : : "memory"); 
 }

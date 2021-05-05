@@ -14,14 +14,16 @@
 #define BOARDSUPPORT_H
 
 #define CPU_MHZ 1
+long int start_time;
+long int time_difference;
 typedef unsigned int uint32_t;
 
 volatile inline uint32_t read_time() {
     uint32_t time;
-    __asm__ volatile ("rdcycle %[time]" : [time] "=r" (time) : : );
+    clock_gettime();
+    // __asm__ volatile ("rdcycle %[time]" : [time] "=r" (time) : : );
     return time;
 }
 
-extern void dome_switch_in_place(unsigned int domain_id);
 
 #endif
