@@ -13,11 +13,10 @@
 #ifndef L1D_H
 #define L1D_H
 
-// requires
-// - D_SETS
-// - D_WAYS
-// - D_LINE_SIZE
-// - I_LINE_SIZE
+#define D_WAYS 4
+#define D_SETS 128
+#define D_LINE_SIZE 32
+#define I_LINE_SIZE 32
 
 
 typedef unsigned int uint32_t;
