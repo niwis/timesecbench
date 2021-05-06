@@ -23,11 +23,8 @@ void initialise_board (void) {
 }
 
 volatile void transmit(uint32_t i, uint32_t o, uint32_t timing) {
-    i = 0;
-    o = 0;
-    timing = 0;
-    fprintf(P_FILE, i);
-    fprintf(P_FILE, o);
+    fprintf(P_FILE, i, ",");
+    fprintf(P_FILE, o, ",");
     fprintf(P_FILE, timing);
 
 }
