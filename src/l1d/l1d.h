@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Tuesday, 24th November 2020 11:04:25 am
+ * Last Modified: Thursday, 6th May 2021 9:59:54 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -13,10 +13,11 @@
 #ifndef L1D_H
 #define L1D_H
 
-#define D_WAYS 4
-#define D_SETS 128
-#define D_LINE_SIZE 32
-#define I_LINE_SIZE 32
+// requires
+// - D_SETS
+// - D_WAYS
+// - D_LINE_SIZE
+// - I_LINE_SIZE
 
 
 typedef unsigned int uint32_t;
