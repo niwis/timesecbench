@@ -15,17 +15,16 @@
 #include <stdio.h>
 
 FILE *P_FILE;
-int file_name, C;
+char* file_name;
 
 void initialise_board (void) {
-    file_name="information";
+    file_name = "information";
     P_FILE = fopen(file_name, "w");
 }
 
 volatile void transmit(uint32_t i, uint32_t o, uint32_t timing) {
     fprintf(P_FILE, i, ",");
-    fprintf(P_FILE, o, ",");
-    fprintf(P_FILE, timing);
+    fprintf(P_FILE, o, ",", timing);
 
 }
 

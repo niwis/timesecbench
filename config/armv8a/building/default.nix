@@ -17,6 +17,6 @@ with import <nixpkgs> {
 };
 
 mkShell {
-  nativeBuildInputs = [ python3 ];
-  buildInputs = [ ]; # your dependencies here
+  nativeBuildInputs = [ ];
+  buildInputs = [ python3 ]; # your dependencies here
 }
