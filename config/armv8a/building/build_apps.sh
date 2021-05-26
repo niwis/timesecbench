@@ -1,6 +1,3 @@
-#!/usr/bin/env nix-shell
-#!nix-shell  -i bash
-
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 BIN_DIR="$SCRIPTPATH/bin"
 

@@ -23,7 +23,9 @@ void benchmark() {
    for(unsigned int r = 0; r < REPETITION_FACTOR; r++) {
       for(unsigned int o = 0; o < oc; o++) {
          for(unsigned int i = 0; i < ic; i++) {
+            printf("prepare trojan\n");
             prepare_trojan();
+            printf("trojan\n");
             trojan(i);
 
             prepare_spy();
@@ -39,7 +41,7 @@ int __attribute__ ((used))
 main (int argc __attribute__ ((unused)),
       char *argv[] __attribute__ ((unused)))
 {
-
+   
    initialise_board ();
    initialise_benchmark ();
 

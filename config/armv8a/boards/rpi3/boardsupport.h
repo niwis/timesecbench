@@ -18,13 +18,18 @@
 
 #define CPU_MHZ 1
 typedef unsigned int uint32_t;
+typedef unsigned long uint64_t;
 
 
 
 
 volatile inline uint32_t read_time() 
 {
-    return 0;
+    uint64_t r;
+    /* Access cycle counter */
+    asm volatile("mrs %0, pmccntr_el0" : "=r" (r));
+
+    return (uint32_t)(r & 0xFFFFFFFF);
 }
 
 

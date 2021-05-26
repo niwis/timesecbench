@@ -19,6 +19,14 @@
 // - D_LINE_SIZE
 // - I_LINE_SIZE
 
+#define L1D_WORD_COUNT (L1D_SIZE/sizeof(uint64_t))
+
+// A structure of the size of L1I where we can easily write instructions
+typedef volatile struct {
+    uint64_t words[L1D_WORD_COUNT];
+} __attribute__ ((aligned (I_LINE_SIZE)))
+l1d_work_area;
+
 
 typedef unsigned int uint32_t;
 typedef void volatile* ADDRESS;
