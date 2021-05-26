@@ -4,7 +4,7 @@
  * Created Date: Thursday November 26th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Wednesday, 3rd March 2021 4:17:32 pm
+ * Last Modified: Wednesday, 26th May 2021 2:52:09 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -20,11 +20,11 @@ uint32_t zero_jumps[BTB_ENTRIES];
 uint32_t one_jumps[BTB_ENTRIES];
 
 // ret_one and ret_zero content is not important, but they are two distinct jump destinations.
-__attribute__ ((noinline)) volatile uint32_t ret_zero() {
+__attribute__ ((noinline)) volatile WORD ret_zero() {
     return 0;
 }
 
-__attribute__ ((noinline)) volatile uint32_t ret_one() {
+__attribute__ ((noinline)) volatile WORD ret_one() {
     return 1;
 }
 
@@ -34,29 +34,29 @@ volatile void write_training_gadget() {
     //write ret at the end
     area.entries[BTB_ENTRIES] = RET_OPCODE;
     
-    uint32_t ret_zero_add = ((uint32_t) ret_zero);
-    uint32_t ret_one_add = ((uint32_t) ret_one);
+    WORD ret_zero_add = ((WORD) ret_zero);
+    WORD ret_one_add = ((WORD) ret_one);
 
-    for(uint32_t i = 0; i < BTB_ENTRIES; i++) {
-        uint32_t* jadd = &(area.entries[i]);
-        zero_jumps[i] = J_OPCODE | encode_jump_offset(ret_zero_add - (uint32_t)jadd);
-        one_jumps[i]  = J_OPCODE | encode_jump_offset(ret_one_add - (uint32_t)jadd);
+    for(WORD i = 0; i < BTB_ENTRIES; i++) {
+        WORD* jadd = &(area.entries[i]);
+        zero_jumps[i] = J_OPCODE | encode_jump_offset(ret_zero_add - (WORD)jadd);
+        one_jumps[i]  = J_OPCODE | encode_jump_offset(ret_one_add - (WORD)jadd);
 
         // *jadd = zero_jumps[i]; // not necessary here
     }
 }
 
-void init_btb(uint32_t passes) {
+void init_btb(WORD passes) {
     //1 - rewrite "j ret_zero" everywhere
-    for(uint32_t i = 0; i < BTB_ENTRIES; i++) {
-        uint32_t* callsite = (uint32_t*) &(area.entries[i]);
+    for(WORD i = 0; i < BTB_ENTRIES; i++) {
+        WORD* callsite = (WORD*) &(area.entries[i]);
         *callsite = zero_jumps[i];
     }
 
     // 2 - train. Jump to jump in training gadget.
-    for(uint32_t p = 0; p < passes; p++) {
+    for(WORD p = 0; p < passes; p++) {
 
-        for(uint32_t i = 0; i < BTB_ENTRIES; i++) {
+        for(WORD i = 0; i < BTB_ENTRIES; i++) {
             sig_jump* j = (sig_jump*)  &(area.entries[i]);
             j();
         }
@@ -67,9 +67,9 @@ void init_btb(uint32_t passes) {
 
 
 
-void touch_one_btb(uint32_t i) {
+void touch_one_btb(WORD i) {
     //1 - rewrite "j ret_one"
-    volatile uint32_t* touch_add = &(area.entries[i]);
+    volatile WORD* touch_add = &(area.entries[i]);
     *touch_add = one_jumps[i];
     instructions_fence();
 
@@ -83,9 +83,9 @@ void touch_one_btb(uint32_t i) {
 }
 
 //Alignement is required for precise time measurement: we do not want the fetch to interfere.
-__attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) uint32_t poke_one_btb(uint32_t i) {
+__attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) TIMECOUNT poke_one_btb(WORD i) {
     // volatile uint32_t* address = (uint32_t*)((uint32_t)training_btb) + (i << 2);
-    volatile uint32_t* address = &(area.entries[i]);
+    volatile WORD* address = &(area.entries[i]);
 
     //1 - rewrite "j ret_one"
     *address = one_jumps[i];
@@ -95,9 +95,9 @@ __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) uint32_t poke
 
     //2 - measure time
     sig_jump* j = (sig_jump*) address;
-    uint32_t start = read_time();
+    TIMECOUNT start = read_time();
     j();
-    uint32_t end = read_time();
+    TIMECOUNT end = read_time();
         
     //3 - rewrite "j ret_zero"
     *address = zero_jumps[i];
@@ -107,12 +107,12 @@ __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) uint32_t poke
 }
 
 // try to communicate i to spy
-volatile void trojan(uint32_t i) {
+volatile void trojan(WORD i) {
     touch_one_btb(i);
 }
 
 //try to read o in communication channel
-volatile uint32_t spy(uint32_t o) {
+volatile TIMECOUNT spy(WORD o) {
     return poke_one_btb(o);
 }
 
@@ -129,10 +129,10 @@ void initialise_benchmark() {
     write_training_gadget();
 }
 
-uint32_t get_input_symbols_count() {
+WORD get_input_symbols_count() {
     return BTB_ENTRIES;
 }
 
-uint32_t get_output_symbols_count() {
+WORD get_output_symbols_count() {
     return BTB_ENTRIES;
 }

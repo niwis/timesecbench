@@ -13,6 +13,11 @@ TESTS="l1d"
 cd $SCRIPTPATH
 
 mkdir -p $BIN_DIR
+mkdir -p $ROOT_PATH/list
 
 python3 $ROOT_PATH/build_all.py --arch armv8a --chip bcm2837 --board rpi3 --clean
 
+for test in $TESTS; do
+	mv $ROOT_PATH/bd/src/$test/$test $BIN_DIR/$test
+	aarch64-linux-gnu-objdump -d $BIN_DIR/$test > $ROOT_PATH/list/$test.list
+done

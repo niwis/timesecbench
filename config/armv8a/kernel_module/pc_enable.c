@@ -6,6 +6,7 @@
 #define ARMV8_PMCR_E            (1 << 0) /*  Enable all counters */
 #define ARMV8_PMCR_P            (1 << 1) /*  Reset all counters */
 #define ARMV8_PMCR_C            (1 << 2) /*  Cycle counter reset */
+#define ARMV8_PMCR_D            (1 << 3) /*  Enable divider by 64 */
 #define ARMV8_PMCR_N_MASK       0x1f
 
 #define ARMV8_PMUSERENR_EN_EL0  (1 << 0) /*  EL0 access enable */
@@ -31,7 +32,7 @@ static int __init pc_enable_init(void) {
     /* Enable counters */
     unsigned long val=0;
     asm volatile("mrs %0, pmcr_el0" : "=r" (val));
-    asm volatile("msr pmcr_el0, %0" : : "r" (val|ARMV8_PMCR_E));
+    asm volatile("msr pmcr_el0, %0" : : "r" (val|ARMV8_PMCR_E & (~ARMV8_PMCR_D)));
     printk(KERN_INFO "Enable performance counters for users.\n");
     return 0;
 }

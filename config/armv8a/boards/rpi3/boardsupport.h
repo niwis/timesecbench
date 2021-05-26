@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Friday, 6th November 2020 10:36:23 am
+ * Last Modified: Wednesday, 26th May 2021 3:18:56 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -15,22 +15,19 @@
 #include <time.h>
 #include <stdio.h>
 #include <sys/time.h>
+#include "../../armv8a.h"
 
 #define CPU_MHZ 1
-typedef unsigned int uint32_t;
-typedef unsigned long uint64_t;
 
 
 
 
-volatile inline uint32_t read_time() 
+volatile inline TIMECOUNT read_time() 
 {
-    uint64_t r;
+    TIMECOUNT r;
     /* Access cycle counter */
     asm volatile("mrs %0, pmccntr_el0" : "=r" (r));
 
-    return (uint32_t)(r & 0xFFFFFFFF);
+    return r;
 }
-
-
 #endif

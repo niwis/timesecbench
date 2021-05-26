@@ -4,14 +4,24 @@
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Thursday, 26th November 2020 11:27:47 am
+ * Last Modified: Wednesday, 26th May 2021 3:03:58 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
  */
 
-#ifndef RISCV_H
-#define RISCV_H
+#ifndef ARMV8A_H
+#define ARMV8A_H
+
+
+typedef unsigned int uint32_t;
+typedef unsigned long uint64_t;
+
+typedef void volatile* ADDRESS;
+typedef uint64_t TIMECOUNT;
+typedef uint64_t WORD;
+typedef uint32_t INST;
+
 
 #define RET_OPCODE      0x00008067  // opcode for "ret"
 #define BLT01_OPCODE    0xB54063    // opcode for "blt a0, a1, 0"

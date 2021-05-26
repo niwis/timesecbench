@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Wednesday, 3rd March 2021 11:40:25 am
+ * Last Modified: Wednesday, 26th May 2021 2:50:11 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -33,12 +33,12 @@ volatile void write_training_gadget() {
 
 //assume training gadget has been written
 //init bht with "not taken" condition: "blt a0=2, a1=1, [end]"
-void init_nottaken_bht(uint32_t nb_passes) {    
+void init_nottaken_bht(WORD nb_passes) {    
 
     sig_br* start_branch = (sig_br*)(&area1.entries[0]);
 
     //take the branches
-    for(uint32_t i = 0; i < nb_passes; i++) {
+    for(WORD i = 0; i < nb_passes; i++) {
         start_branch(2, 1);
         // return here after all branches from the training gadget have been taken.
         // we do not iterate on the bht entries since all branches instructions in the gadget will be taken successively (condition not met)
@@ -46,32 +46,32 @@ void init_nottaken_bht(uint32_t nb_passes) {
 }
 
 
-void touch_taken_bht(uint32_t i) {
+void touch_taken_bht(WORD i) {
     sig_br* touch_branch = (sig_br*) (&area1.entries[i]);
     touch_branch(1, 2);
 }
 
 //Alignement is required for precise time measurement: we do not want the fetch to interfere.
-__attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) uint32_t poke_taken_bht(uint32_t i) {
+__attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) TIMECOUNT poke_taken_bht(WORD i) {
     sig_br* touch_branch = (sig_br*) (&area1.entries[i]);
-    dummy = ((uint32_t*)touch_branch); // write it somewhere to trigger the addresses computation before the rdtime
+    dummy = ((WORD*)touch_branch); // write it somewhere to trigger the addresses computation before the rdtime
 
-    uint32_t start = read_time();
+    TIMECOUNT start = read_time();
     touch_branch(1, 2);
-    uint32_t end = read_time();
+    TIMECOUNT end = read_time();
     return (end - start);
 }
 
 // try to communicate i to spy
-volatile void trojan(uint32_t i) {
-    uint32_t passes = 1 << BHT_COUNTER_BITS;
-    for(uint32_t j = 0; j < passes; j++) {
+volatile void trojan(WORD i) {
+    WORD passes = 1 << BHT_COUNTER_BITS;
+    for(WORD j = 0; j < passes; j++) {
         touch_taken_bht(i);
     }
 }
 
 //try to read o in communication channel
-volatile uint32_t spy(uint32_t o) {
+volatile TIMECOUNT spy(WORD o) {
     return poke_taken_bht(o);
 }
 
@@ -89,10 +89,10 @@ void initialise_benchmark() {
     write_training_gadget();
 }
 
-uint32_t get_input_symbols_count() {
+WORD get_input_symbols_count() {
     return BHT_ENTRIES;
 }
 
-uint32_t get_output_symbols_count() {
+WORD get_output_symbols_count() {
     return BHT_ENTRIES;
 }

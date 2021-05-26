@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Embench
  * -----
- * Last Modified: Monday, 1st March 2021 4:42:28 pm
+ * Last Modified: Wednesday, 26th May 2021 3:03:11 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -49,7 +49,7 @@ void benchmark (void) __attribute__ ((noinline));
 This function is used to communicate one result. It is called multiple times per benchmark.
 Must be implemented by the board support.
 */
-void transmit(unsigned int input, unsigned int output, unsigned int timing);
+void transmit(WORD input, WORD output, WORD timing);
 
 
 
@@ -61,7 +61,7 @@ void end_benchmark(void);
 /*
 For chip that include support for hardware security domains.
 */
-void security_domain_switch(unsigned int domain_id);
+void security_domain_switch(WORD domain_id);
 
 /*
 A fence that ensure that modified data are reflected in the fetched instructions
@@ -81,12 +81,12 @@ void prepare_spy(void);
 /*
    The trojan sends the [input] value.
 */
-void trojan (unsigned int input);
+void trojan (WORD input);
 
 /*
    The spy return the timing required to read the [output] value.
 */
-unsigned int spy(unsigned int output);
+TIMECOUNT spy(WORD output);
 
 // /*
 //    Read the timer value.
@@ -94,8 +94,8 @@ unsigned int spy(unsigned int output);
 // volatile inline unsigned int read_time(void);// __attribute__((always_inline));
 
 
-unsigned int get_input_symbols_count();
-unsigned int get_output_symbols_count();
+WORD get_input_symbols_count();
+WORD get_output_symbols_count();
 
 
 

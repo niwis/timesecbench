@@ -4,7 +4,7 @@
  * Created Date: Tuesday November 24th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Tuesday, 2nd March 2021 4:17:29 pm
+ * Last Modified: Wednesday, 26th May 2021 2:54:11 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -22,14 +22,14 @@ void prime_l1i() {
     // 2 - fill (one line per set) of the L1I cache with the instructions in this memory area
     
     // //first write rets
-    for(uint32_t s = 0; s < I_SETS; s++) {
+    for(WORD s = 0; s < I_SETS; s++) {
         area2.returns[s*I_LINE_SIZE] = RET_OPCODE;
     }
 
     instructions_fence();
 
     // then execute rets
-    for(uint32_t s = 0; s < I_SETS; s++) {
+    for(WORD s = 0; s < I_SETS; s++) {
         ((sig_fun*)&(area2.returns[s*I_LINE_SIZE]))();//convert address to function pointer, and call it
     }
 }
@@ -39,20 +39,20 @@ void touch_l1i_add(sig_fun* address) {
 }
 
 //Alignement is required for precise time measurement: we do not want the fetch to interfere.
-__attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) volatile uint32_t poke_l1i_add(sig_fun* address) {
-    uint32_t start = read_time();
+__attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) volatile TIMECOUNT poke_l1i_add(sig_fun* address) {
+    TIMECOUNT start = read_time();
     address();
-    uint32_t end = read_time();
+    TIMECOUNT end = read_time();
     return (end - start);
 }
 
 // try to communicate i to spy
-volatile void trojan(uint32_t i) {
+volatile void trojan(WORD i) {
     touch_l1i_add((void *) &(area1.returns[i * I_LINE_SIZE]) );
 }
 
 //try to read o in communication channel
-volatile uint32_t spy(uint32_t o) {
+volatile TIMECOUNT spy(WORD o) {
     return poke_l1i_add((void *) &(area1.returns[o * I_LINE_SIZE]) );
 }
 
@@ -69,17 +69,17 @@ void prepare_spy() {
 void initialise_benchmark() {
 
 
-    for(uint32_t s = 0; s < I_SETS; s++) {
+    for(WORD s = 0; s < I_SETS; s++) {
         area1.returns[s*I_LINE_SIZE] = RET_OPCODE;
     }
 
     instructions_fence();
 }
 
-uint32_t get_input_symbols_count() {
+WORD get_input_symbols_count() {
     return I_SETS;
 }
 
-uint32_t get_output_symbols_count() {
+WORD get_output_symbols_count() {
     return I_SETS;
 }

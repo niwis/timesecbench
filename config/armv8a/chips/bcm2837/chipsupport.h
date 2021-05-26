@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Thursday, 6th May 2021 10:32:34 am
+ * Last Modified: Wednesday, 26th May 2021 3:02:30 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -13,7 +13,7 @@
 #ifndef CHIP_SUPPORT_H
 #define CHIP_SUPPORT_H
 
-#include "../armv8a.h"
+#include "../../armv8a.h"
 
 
 // L1D dimensions

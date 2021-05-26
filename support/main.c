@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Embench
  * -----
- * Last Modified: Monday, 1st March 2021 2:38:58 pm
+ * Last Modified: Wednesday, 26th May 2021 3:06:31 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -23,9 +23,7 @@ void benchmark() {
    for(unsigned int r = 0; r < REPETITION_FACTOR; r++) {
       for(unsigned int o = 0; o < oc; o++) {
          for(unsigned int i = 0; i < ic; i++) {
-            printf("prepare trojan\n");
             prepare_trojan();
-            printf("trojan\n");
             trojan(i);
 
             prepare_spy();

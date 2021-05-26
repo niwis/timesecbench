@@ -4,7 +4,7 @@
  * Created Date: Thursday November 26th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Wednesday, 3rd March 2021 4:30:16 pm
+ * Last Modified: Wednesday, 26th May 2021 2:38:36 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -13,9 +13,9 @@
 #ifndef BTB_H
 #define BTB_H
 
+#include "support.h"
+
 typedef volatile void sig_jump();
-typedef unsigned int uint32_t;
-typedef void volatile* ADDRESS;
 
 // A structure of the size the number of btb entries + 1 (for last return instruction) where we can easily write instructions
 typedef volatile struct {

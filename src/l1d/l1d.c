@@ -4,12 +4,11 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Tuesday, 24th November 2020 3:26:32 pm
+ * Last Modified: Wednesday, 26th May 2021 3:47:42 pm
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
  */
-
 
 #include "support.h"
 #include "l1d.h"
@@ -18,42 +17,46 @@ l1d_work_area area1;
 l1d_work_area area2;
 
 
-uint32_t touch_l1d_add(ADDRESS address) {
-    return  *((uint32_t volatile*)address);
+WORD touch_l1d_add(ADDRESS address) {
+    // printf("Area1: 0x%lx -> 0x%lx\n", &area1, (&area1) + sizeof(area1));
+    // printf("Area2: 0x%lx -> 0x%lx\n", &area2, (&area2) + sizeof(area2));
+    // printf("Touching 0x%lx\n", address);
+    return  *((WORD volatile*)address);
 }
 
 
 //Alignement is required for precise time measurement: we do not want the fetch to interfere.
-__attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) volatile uint32_t poke_l1d_add(ADDRESS address) {
-    uint32_t start = read_time();
+__attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) volatile TIMECOUNT poke_l1d_add(ADDRESS address) {
+    TIMECOUNT start = read_time();
     touch_l1d_add(address);
-    uint32_t end = read_time();
+    TIMECOUNT end = read_time();
     return (end - start);
 }
 
 // try to communicate i to spy
-volatile void trojan(uint32_t i) {
+volatile void trojan(WORD i) {
     //here i is set index
-    touch_l1d_add((void *) ((uint32_t)(&area2) + i*D_LINE_SIZE ) );
+    touch_l1d_add((void *) ((WORD)(&area2) + i*D_LINE_SIZE ) );
 }
 
 //try to read o in communication channel
-volatile uint32_t spy(uint32_t o) {
+volatile TIMECOUNT spy(WORD o) {
     //here o is a set index
-    return poke_l1d_add((void *) (o*D_LINE_SIZE) );
+    // return poke_l1d_add((void *) ((WORD)(&area2) + o*D_LINE_SIZE) );
+    TIMECOUNT v = poke_l1d_add((void *) ((WORD)(&area2) + o*D_LINE_SIZE) );
+    return v;
 }
 
 void prepare_trojan() {
     security_domain_switch(0);
-    printf("after switch \n");
 
 
     // to prepare trojan, we must touch memory someplaces never touched by trojan as to fill the cache
-    for (uint32_t w = 0; w < D_WAYS; w++) {
-        for (uint32_t s = 0; s < D_SETS; s++) {
+    for (WORD w = 0; w < D_WAYS; w++) {
+        for (WORD s = 0; s < D_SETS; s++) {
             // touch_l1d_add((void*)(D_LAST_LINE - s - w*D_SETS));
-            printf("touch\n");
-            touch_l1d_add((void*)(D_LINE_SIZE * ((uint32_t)(&area1) + s + w*D_SETS)));
+            
+            touch_l1d_add((void*)((WORD)(&area1) + D_LINE_SIZE * (s + w*D_SETS)));
         }
     }
 }
@@ -63,13 +66,16 @@ void prepare_spy() {
 }
 
 void initialise_benchmark() {
+    WORD pmcr;
+    asm volatile("mrs %0, pmcr_el0" : "=r" (pmcr));
     
+    printf("PMCR = 0x%x\n");
 }
 
-uint32_t get_input_symbols_count() {
+WORD get_input_symbols_count() {
     return D_SETS;
 }
 
-uint32_t get_output_symbols_count() {
+WORD get_output_symbols_count() {
     return D_SETS;
 }
