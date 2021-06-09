@@ -17,5 +17,5 @@ void security_domain_switch(WORD domain_id) {
 }
 
 void instructions_fence(void) {
-    asm("isb" : : : "memory"); 
+    asm("dsb sy \n isb\n blt instructions_fence" : : : "memory"); 
 }

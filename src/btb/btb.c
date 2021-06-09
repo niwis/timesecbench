@@ -38,7 +38,7 @@ volatile void write_training_gadget() {
     WORD ret_one_add = ((WORD) ret_one);
 
     for(WORD i = 0; i < BTB_ENTRIES; i++) {
-        WORD* jadd = &(area.entries[i]);
+        INST* jadd = &(area.entries[i]);
         zero_jumps[i] = J_OPCODE | encode_jump_offset(ret_zero_add - (WORD)jadd);
         one_jumps[i]  = J_OPCODE | encode_jump_offset(ret_one_add - (WORD)jadd);
 

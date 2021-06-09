@@ -22,6 +22,17 @@ MODULE_AUTHOR("Pierre Jamelot");
 MODULE_DESCRIPTION("Enable performance counters for users.");
 MODULE_VERSION("0.01");
 
+static void disable_prefetch(void)
+{
+    unsigned long value = 0;
+    printk("Manipulating data prefething register\n");
+    asm volatile("mrs %0, S3_1_C15_C2_0" : "=r" (value)); // read register
+    printk("Reading old S3_1_C15_C2_0 = %lx)\n", value);
+    asm volatile("msr S3_1_C15_C2_0, %0" :: "r" (value)); // write register
+
+    printk("Done manipulating data prefetching register\n");
+}
+
 static int __init pc_enable_init(void) {
     /*Enable user-mode access to counters. */
     asm volatile("msr pmuserenr_el0, %0" : : "r"((u64)ARMV8_PMUSERENR_EN_EL0|ARMV8_PMUSERENR_ER|ARMV8_PMUSERENR_CR));

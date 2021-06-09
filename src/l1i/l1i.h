@@ -20,14 +20,14 @@
 // - I_LINE_SIZE
 // - L1I_SIZE
 
-#define L1I_WORD_COUNT (L1I_SIZE/sizeof(uint32_t))
+#define L1I_WORD_COUNT (L1I_SIZE/sizeof(INST))
 
 
 typedef void sig_fun(void);
 
 // A structure of the size of L1I where we can easily write instructions
 typedef volatile struct {
-    uint32_t returns[L1I_WORD_COUNT];
+    INST returns[L1I_WORD_COUNT];
 } __attribute__ ((aligned (I_LINE_SIZE)))
 l1i_work_area;
 

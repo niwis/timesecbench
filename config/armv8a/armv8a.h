@@ -23,10 +23,10 @@ typedef uint64_t WORD;
 typedef uint32_t INST;
 
 
-#define RET_OPCODE      0x00008067  // opcode for "ret"
-#define BLT01_OPCODE    0xB54063    // opcode for "blt a0, a1, 0"
-#define J_OPCODE        0x6F        // opcode for "j 0" (direct jump)
-
+#define RET_OPCODE      0xd65f03c0  // opcode for "ret"
+#define BLT01_OPCODE    0x5400000B    // opcode for "blt a0, a1, 0"
+#define J_OPCODE        0x04000000        // opcode for "j 0" (direct jump)
+//000x 01ii iiii iiii iiii iiii iiii iiii  -  b ADDR_PCREL26
 
 inline unsigned int encode_branch_offset(unsigned int offset) {
     unsigned int final = (offset >> 4) & 0x80;
@@ -38,9 +38,7 @@ inline unsigned int encode_branch_offset(unsigned int offset) {
 
 inline unsigned int encode_jump_offset(unsigned int offset) {
     unsigned int imm = offset & 0xFF000;
-    imm |= (offset << 11) & 0x80000000;
-    imm |= (offset << 20) & 0x7FE00000;
-    imm |= (offset << 9) & 0x00100000;
+
     return imm;
 }
 

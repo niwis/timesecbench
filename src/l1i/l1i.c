@@ -16,6 +16,8 @@
 l1i_work_area area1;
 l1i_work_area area2;
 
+
+
 void prime_l1i() {
     // the goal is:
     // 1 - fill an empty region of memory with ret instructions (0x00008067), that can be used to fill (one line per set) the cache
@@ -29,9 +31,12 @@ void prime_l1i() {
     instructions_fence();
 
     // then execute rets
+    // printf("avant deuxième for\n");
     for(WORD s = 0; s < I_SETS; s++) {
         ((sig_fun*)&(area2.returns[s*I_LINE_SIZE]))();//convert address to function pointer, and call it
+
     }
+    // printf("après deuxième for\n");
 }
 
 void touch_l1i_add(sig_fun* address) {
@@ -45,7 +50,6 @@ __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) volatile TIME
     TIMECOUNT end = read_time();
     return (end - start);
 }
-
 // try to communicate i to spy
 volatile void trojan(WORD i) {
     touch_l1i_add((void *) &(area1.returns[i * I_LINE_SIZE]) );
@@ -54,11 +58,12 @@ volatile void trojan(WORD i) {
 //try to read o in communication channel
 volatile TIMECOUNT spy(WORD o) {
     return poke_l1i_add((void *) &(area1.returns[o * I_LINE_SIZE]) );
+
 }
 
 void prepare_trojan() {
     security_domain_switch(0);
-
+    
     prime_l1i();
 }
 

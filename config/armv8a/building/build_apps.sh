@@ -3,12 +3,11 @@ BIN_DIR="$SCRIPTPATH/bin"
 
 ROOT_PATH="$(realpath "$SCRIPTPATH/../../..")"
 
-# TESTS="l1d	\
-# 		l1i \
-# 		bht \
-# 		btb"
+ TESTS="l1d	\
+ 		l1i \
+ 		bht \
+ 		btb"
 
-TESTS="l1d"
 
 cd $SCRIPTPATH
 
