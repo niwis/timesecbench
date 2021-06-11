@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Wednesday, 26th May 2021 3:18:56 pm
+ * Last Modified: Friday, 11th June 2021 9:40:00 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -26,7 +26,7 @@ volatile inline TIMECOUNT read_time()
 {
     TIMECOUNT r;
     /* Access cycle counter */
-    asm volatile("mrs %0, pmccntr_el0" : "=r" (r));
+    __asm__ volatile("mrs %0, pmccntr_el0" : "=r" (r));
 
     return r;
 }

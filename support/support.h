@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Embench
  * -----
- * Last Modified: Wednesday, 26th May 2021 3:03:11 pm
+ * Last Modified: Friday, 11th June 2021 9:33:12 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -67,6 +67,12 @@ void security_domain_switch(WORD domain_id);
 A fence that ensure that modified data are reflected in the fetched instructions
 */
 void instructions_fence(void);
+
+/*
+Some instruction sets separate the branch from the compare steps.
+In this case, this function should compare two registers where the comparison result will be used by the branching benchmark.
+*/
+void branch_compare(void);
 
 /*
    Set the chip state before the trojan transmission.

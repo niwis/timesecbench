@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Wednesday, 26th May 2021 3:03:58 pm
+ * Last Modified: Friday, 11th June 2021 9:35:51 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -41,5 +41,6 @@ inline unsigned int encode_jump_offset(unsigned int offset) {
 
     return imm;
 }
+
 
 #endif

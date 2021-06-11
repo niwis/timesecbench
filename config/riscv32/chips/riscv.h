@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Thursday, 26th November 2020 11:27:47 am
+ * Last Modified: Friday, 11th June 2021 9:33:24 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -32,6 +32,10 @@ inline unsigned int encode_jump_offset(unsigned int offset) {
     imm |= (offset << 20) & 0x7FE00000;
     imm |= (offset << 9) & 0x00100000;
     return imm;
+}
+
+void branch_compare(void) {
+    
 }
 
 #endif

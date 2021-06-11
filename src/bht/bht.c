@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Wednesday, 26th May 2021 2:50:11 pm
+ * Last Modified: Friday, 11th June 2021 9:36:52 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -16,9 +16,9 @@
 bht_work_area area1;
 volatile uint32_t dummy;
 
-// the training gadget is an array of "blt a0, a1, [gadget_end]" (size = BHT_ENTRIES), terminating with a ret
+// the gadget is an array of "blt a0, a1, [gadget_end]" (size = BHT_ENTRIES), terminating with a ret
 // if we execute one instruction, it will be the only branch to be taken if the condition is met, or all successive branches will be taken if not met.
-volatile void write_training_gadget() {
+volatile void write_gadget() {
     //write ret at the end
     area1.entries[BHT_ENTRIES] = RET_OPCODE;
     uint32_t off0_val = BLT01_OPCODE;
@@ -31,7 +31,7 @@ volatile void write_training_gadget() {
     }
 }
 
-//assume training gadget has been written
+//assume gadget has been written
 //init bht with "not taken" condition: "blt a0=2, a1=1, [end]"
 void init_nottaken_bht(WORD nb_passes) {    
 
@@ -39,6 +39,7 @@ void init_nottaken_bht(WORD nb_passes) {
 
     //take the branches
     for(WORD i = 0; i < nb_passes; i++) {
+        branch_compare();
         start_branch(2, 1);
         // return here after all branches from the training gadget have been taken.
         // we do not iterate on the bht entries since all branches instructions in the gadget will be taken successively (condition not met)
@@ -48,6 +49,7 @@ void init_nottaken_bht(WORD nb_passes) {
 
 void touch_taken_bht(WORD i) {
     sig_br* touch_branch = (sig_br*) (&area1.entries[i]);
+    branch_compare();
     touch_branch(1, 2);
 }
 
@@ -55,7 +57,7 @@ void touch_taken_bht(WORD i) {
 __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) TIMECOUNT poke_taken_bht(WORD i) {
     sig_br* touch_branch = (sig_br*) (&area1.entries[i]);
     dummy = ((WORD*)touch_branch); // write it somewhere to trigger the addresses computation before the rdtime
-
+    branch_compare();
     TIMECOUNT start = read_time();
     touch_branch(1, 2);
     TIMECOUNT end = read_time();
@@ -86,7 +88,7 @@ void prepare_spy() {
 }
 
 void initialise_benchmark() {
-    write_training_gadget();
+    write_gadget();
 }
 
 WORD get_input_symbols_count() {

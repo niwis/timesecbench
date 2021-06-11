@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Wednesday, 26th May 2021 2:56:58 pm
+ * Last Modified: Friday, 11th June 2021 9:28:26 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -29,7 +29,7 @@ typedef volatile struct {
 } __attribute__ ((aligned (256))) //TODO: I get a bug with smaller alignments
 bht_work_area;
 
-volatile void write_training_gadget();
+volatile void write_gadget();
 volatile void init_nottaken_bht(WORD nb_passes);
 volatile inline void touch_taken_bht(WORD i);
 TIMECOUNT poke_taken_bht(WORD i);
