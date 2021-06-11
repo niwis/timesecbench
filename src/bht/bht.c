@@ -25,18 +25,18 @@ volatile void write_gadget() {
 
     for(uint32_t i = 0; i < BHT_ENTRIES; i++) {
         uint32_t offset = &area1.entries[BHT_ENTRIES] - &area1.entries[i];
-        offset <<= 2;
+        // offset <<= 2;
         
         area1.entries[i] = off0_val | encode_branch_offset(offset);
+    
     }
+    
 }
 
 //assume gadget has been written
 //init bht with "not taken" condition: "blt a0=2, a1=1, [end]"
 void init_nottaken_bht(WORD nb_passes) {    
-
     sig_br* start_branch = (sig_br*)(&area1.entries[0]);
-
     //take the branches
     for(WORD i = 0; i < nb_passes; i++) {
         branch_compare();

@@ -29,10 +29,7 @@ typedef uint32_t INST;
 //000x 01ii iiii iiii iiii iiii iiii iiii  -  b ADDR_PCREL26
 
 inline unsigned int encode_branch_offset(unsigned int offset) {
-    unsigned int final = (offset >> 4) & 0x80;
-    final |= (offset << 7) & 0xF00;
-    final |= (offset << 20) & 0x7E000000;
-    final |= (offset << 21) & 0x80000000;
+    unsigned int final = (offset << 5) & 0xFFFFE0;
     return final;
 }
 
