@@ -19,3 +19,7 @@ void security_domain_switch(unsigned int domain_id) {
 void instructions_fence(void) {
     asm("fence.i" : : : "memory");
 }
+
+void branch_compare(void) {
+    
+}

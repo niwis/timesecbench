@@ -14,7 +14,8 @@
 #define BOARDSUPPORT_H
 
 #define CPU_MHZ 1
-typedef unsigned int uint32_t;
+
+#include <stdint.h>
 
 volatile inline uint32_t read_time() {
     uint32_t time;

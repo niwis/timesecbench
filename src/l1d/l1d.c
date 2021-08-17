@@ -18,9 +18,6 @@ l1d_work_area area2;
 
 
 WORD touch_l1d_add(ADDRESS address) {
-    // printf("Area1: 0x%lx -> 0x%lx\n", &area1, (&area1) + sizeof(area1));
-    // printf("Area2: 0x%lx -> 0x%lx\n", &area2, (&area2) + sizeof(area2));
-    // printf("Touching 0x%lx\n", address);
     return  *((WORD volatile*)address);
 }
 
@@ -66,10 +63,7 @@ void prepare_spy() {
 }
 
 void initialise_benchmark() {
-    WORD pmcr;
-    asm volatile("mrs %0, pmcr_el0" : "=r" (pmcr));
     
-    printf("PMCR = 0x%x\n");
 }
 
 WORD get_input_symbols_count() {

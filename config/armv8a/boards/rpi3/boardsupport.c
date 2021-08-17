@@ -21,6 +21,9 @@ int last_o = -1;
 void initialise_board (void) {
     file_name = "results.csv";
     P_FILE = fopen(file_name, "w");
+
+    WORD pmcr;
+    asm volatile("mrs %0, pmcr_el0" : "=r" (pmcr));
 }
 
 volatile void transmit(WORD i, WORD o, WORD timing) {
