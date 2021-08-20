@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Friday, 11th June 2021 9:33:24 am
+ * Last Modified: Friday, 20th August 2021 11:15:45 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -26,6 +26,7 @@ typedef uint32_t INST;
 
 
 inline unsigned int encode_branch_offset(unsigned int offset) {
+    offset <<= 2;
     unsigned int final = (offset >> 4) & 0x80;
     final |= (offset << 7) & 0xF00;
     final |= (offset << 20) & 0x7E000000;

@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Friday, 11th June 2021 9:28:26 am
+ * Last Modified: Friday, 20th August 2021 10:59:31 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -25,7 +25,7 @@ typedef volatile void sig_br(WORD rs1, WORD rs2);
 
 // A structure of the size the number of bht entries + 1 (for last return instruction) where we can easily write instructions
 typedef volatile struct {
-    uint32_t entries[BHT_ENTRIES+1];
+    INST entries[BHT_ENTRIES+1];
 } __attribute__ ((aligned (256))) //TODO: I get a bug with smaller alignments
 bht_work_area;
 

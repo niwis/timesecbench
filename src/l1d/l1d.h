@@ -4,7 +4,7 @@
  * Created Date: Wednesday November 4th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Wednesday, 26th May 2021 4:24:17 pm
+ * Last Modified: Friday, 20th August 2021 10:48:27 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2020 INRIA
@@ -21,12 +21,12 @@
 // - D_LINE_SIZE
 // - I_LINE_SIZE
 
-#define L1D_WORD_COUNT (L1D_SIZE/sizeof(uint64_t))
+#define L1D_WORD_COUNT (L1D_SIZE/sizeof(WORD))
 
 // A structure of the size of L1D
 typedef volatile struct {
     WORD words[L1D_WORD_COUNT];
-} __attribute__ ((aligned (I_LINE_SIZE)))
+} __attribute__ ((aligned (D_LINE_SIZE)))
 l1d_work_area;
 
 
