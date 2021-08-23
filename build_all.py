@@ -607,7 +607,7 @@ def create_link_binlist(abs_bd):
 
     # Add generic support
     # for supp in ['main.o', 'beebsc.o']:
-    for supp in ['main.o']:
+    for supp in ['main.o', 'benchmark.o']:
         binf = os.path.join(gp['bd_supportdir'], supp)
         if os.path.isfile(binf):
             binlist.extend(gp['ld_input_pattern'].format(binf).split())
