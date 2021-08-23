@@ -31,11 +31,11 @@ typedef volatile struct {
 } __attribute__ ((aligned (I_LINE_SIZE)))
 l1i_work_area;
 
-volatile void prime_l1i(void);
-volatile inline void touch_l1i_add(sig_fun* add);
+void prime_l1i(void);
+inline void touch_l1i_add(sig_fun* add);
 volatile TIMECOUNT poke_l1i_add(sig_fun* add);
 
-volatile inline void write_u32(void* address, uint32_t value) {
+inline void write_u32(void* address, uint32_t value) {
     *((uint32_t volatile*)address) = value;
 }
 

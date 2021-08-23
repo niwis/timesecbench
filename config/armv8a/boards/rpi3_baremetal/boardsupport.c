@@ -26,7 +26,16 @@ void initialise_board (void) {
     asm volatile("mrs %0, pmcr_el0" : "=r" (pmcr));
 }
 
-volatile void transmit(WORD i, WORD o, WORD timing) {
+volatile TIMECOUNT read_time() 
+{
+    TIMECOUNT r;
+    /* Access cycle counter */
+    __asm__ volatile("mrs %0, pmccntr_el0" : "=r" (r));
+
+    return r;
+}
+
+void transmit(WORD i, WORD o, WORD timing) {
 
     if(o != last_o) {
         if(last_o != -1) {
@@ -42,7 +51,7 @@ volatile void transmit(WORD i, WORD o, WORD timing) {
     }
 }
 
-volatile void end_benchmark() {
+void end_benchmark() {
     fclose(P_FILE);
 }
  

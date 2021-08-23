@@ -14,11 +14,11 @@
 #include "bht.h"
 
 bht_work_area area1;
-volatile uint32_t dummy;
+volatile WORD* dummy;
 
 // the gadget is an array of "blt a0, a1, [gadget_end]" (size = BHT_ENTRIES), terminating with a ret
 // if we execute one instruction, it will be the only branch to be taken if the condition is met, or all successive branches will be taken if not met.
-volatile void write_gadget() {
+void write_gadget() {
     //write ret at the end
     area1.entries[BHT_ENTRIES] = RET_OPCODE;
     uint32_t off0_val = BLT01_OPCODE;
@@ -65,7 +65,7 @@ __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) TIMECOUNT pok
 }
 
 // try to communicate i to spy
-volatile void trojan(WORD i) {
+void trojan(WORD i) {
     WORD passes = 1 << BHT_COUNTER_BITS;
     for(WORD j = 0; j < passes; j++) {
         touch_taken_bht(i);
@@ -73,7 +73,7 @@ volatile void trojan(WORD i) {
 }
 
 //try to read o in communication channel
-volatile TIMECOUNT spy(WORD o) {
+TIMECOUNT spy(WORD o) {
     return poke_taken_bht(o);
 }
 

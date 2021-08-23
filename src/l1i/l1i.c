@@ -51,12 +51,12 @@ __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) volatile TIME
     return (end - start);
 }
 // try to communicate i to spy
-volatile void trojan(WORD i) {
+void trojan(WORD i) {
     touch_l1i_add((void *) &(area1.returns[i * I_LINE_SIZE]) );
 }
 
 //try to read o in communication channel
-volatile TIMECOUNT spy(WORD o) {
+TIMECOUNT spy(WORD o) {
     return poke_l1i_add((void *) &(area1.returns[o * I_LINE_SIZE]) );
 
 }

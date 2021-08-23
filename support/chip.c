@@ -11,18 +11,18 @@
 
 /* This is just a wrapper for the chip specific support file if there is one. */
 
-#include "config.h"
+// #include "config.h"
 
-#ifdef HAVE_CHIPSUPPORT_H
+// #ifdef HAVE_CHIPSUPPORT_H
 #include "chipsupport.c"
-#endif
+// #endif
 
 /* Standard C does not permit empty translation units, so provide one. */
 
-static void
-empty_func ()
-{
-}
+// static void
+// empty_func ()
+// {
+// }
 
 /*
    Local Variables:

@@ -17,7 +17,7 @@ l1d_work_area area1;
 l1d_work_area area2;
 
 
-WORD touch_l1d_add(ADDRESS address) {
+volatile WORD touch_l1d_add(ADDRESS address) {
     return  *((WORD volatile*)address);
 }
 
@@ -31,13 +31,13 @@ __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) volatile TIME
 }
 
 // try to communicate i to spy
-volatile void trojan(WORD i) {
+void trojan(WORD i) {
     //here i is set index
     touch_l1d_add((void *) ((WORD)(&area2) + i*D_LINE_SIZE ) );
 }
 
 //try to read o in communication channel
-volatile TIMECOUNT spy(WORD o) {
+TIMECOUNT spy(WORD o) {
     //here o is a set index
     // return poke_l1d_add((void *) ((WORD)(&area2) + o*D_LINE_SIZE) );
     TIMECOUNT v = poke_l1d_add((void *) ((WORD)(&area2) + o*D_LINE_SIZE) );

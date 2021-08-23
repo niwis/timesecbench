@@ -21,7 +21,7 @@
 // - BHT_ENTRIES
 // - I_LINE_SIZE
 
-typedef volatile void sig_br(WORD rs1, WORD rs2);
+typedef void sig_br(WORD rs1, WORD rs2);
 
 // A structure of the size the number of bht entries + 1 (for last return instruction) where we can easily write instructions
 typedef volatile struct {
@@ -29,9 +29,9 @@ typedef volatile struct {
 } __attribute__ ((aligned (256))) //TODO: I get a bug with smaller alignments
 bht_work_area;
 
-volatile void write_gadget();
-volatile void init_nottaken_bht(WORD nb_passes);
-volatile inline void touch_taken_bht(WORD i);
+void write_gadget();
+void init_nottaken_bht(WORD nb_passes);
+inline void touch_taken_bht(WORD i);
 TIMECOUNT poke_taken_bht(WORD i);
 
 #endif

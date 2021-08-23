@@ -1,5 +1,5 @@
 /*
- * File: riscv.h
+ * File: armv8a.h
  * Project: riscv32
  * Created Date: Wednesday November 25th 2020
  * Author: Ronan (ronan.lashermes@inria.fr)
@@ -28,16 +28,9 @@ typedef uint32_t INST;
 #define J_OPCODE        0x04000000        // opcode for "j 0" (direct jump)
 //000x 01ii iiii iiii iiii iiii iiii iiii  -  b ADDR_PCREL26
 
-inline unsigned int encode_branch_offset(unsigned int offset) {
-    unsigned int final = (offset << 5) & 0xFFFFE0;
-    return final;
-}
+inline unsigned int encode_branch_offset(unsigned int offset);
 
-inline unsigned int encode_jump_offset(unsigned int offset) {
-    unsigned int imm = offset & 0xFF000;
-
-    return imm;
-}
+inline unsigned int encode_jump_offset(unsigned int offset);
 
 
 #endif

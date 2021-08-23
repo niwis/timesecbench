@@ -20,14 +20,5 @@
 #define CPU_MHZ 1
 
 
-
-
-volatile inline TIMECOUNT read_time() 
-{
-    TIMECOUNT r;
-    /* Access cycle counter */
-    __asm__ volatile("mrs %0, pmccntr_el0" : "=r" (r));
-
-    return r;
-}
+volatile TIMECOUNT read_time();
 #endif
