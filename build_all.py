@@ -532,6 +532,7 @@ def compile_support():
 
     # Compile each general support file in the benchmark
     # succeeded &= compile_file('beebsc', gp['supportdir'], gp['bd_supportdir'])
+    succeeded &= compile_file('benchmark', gp['supportdir'], gp['bd_supportdir'])
     succeeded &= compile_file('main', gp['supportdir'], gp['bd_supportdir'])
 
     # Compile dummy files that are needed

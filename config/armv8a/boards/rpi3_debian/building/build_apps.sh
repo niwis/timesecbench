@@ -14,7 +14,7 @@ cd $SCRIPTPATH
 mkdir -p $BIN_DIR
 mkdir -p $ROOT_PATH/list
 
-python3 $ROOT_PATH/build_all.py --arch armv8a --chip bcm2837 --board rpi3 --clean
+python3 $ROOT_PATH/build_all.py --arch armv8a --chip bcm2837 --board rpi3_debian --clean
 
 for test in $TESTS; do
 	mv $ROOT_PATH/bd/src/$test/$test $BIN_DIR/$test
