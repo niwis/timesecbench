@@ -28,9 +28,9 @@ typedef uint32_t INST;
 #define J_OPCODE        0x04000000        // opcode for "j 0" (direct jump)
 //000x 01ii iiii iiii iiii iiii iiii iiii  -  b ADDR_PCREL26
 
-inline unsigned int encode_branch_offset(unsigned int offset);
+unsigned int encode_branch_offset(unsigned int offset);
 
-inline unsigned int encode_jump_offset(unsigned int offset);
+unsigned int encode_jump_offset(unsigned int offset);
 
 
 #endif
