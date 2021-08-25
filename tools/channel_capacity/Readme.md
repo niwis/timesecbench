@@ -1,7 +1,8 @@
 # Channel capacity evaluation
 
 This script tries to evaluate APPROXIMATELY the channel capacity of the files in input.
-Using a genetic algorithm.
+Uses a genetic algorithm.
+Running the script twices may not yield the same results, but they should be close.
 
 ## Usage
 

@@ -167,8 +167,8 @@ function pm2mi(pm::Array{Float64,2})
 end
 
 function mi_eval(path::String)
-    tm = convert(Array{Int64, 2}, CSV.read(path, header=false))
-    println("*** $path ***")
+    d = CSV.File(path; header=false) |> DataFrame
+    tm = Matrix{Int64}(d)
     mi_eval(tm)
 end
 
@@ -243,4 +243,6 @@ end
 for f in ARGS
     println("Evaluating capacity for $f")
     find_channel_capacity(f)
+
+    mi_eval(f)
 end
