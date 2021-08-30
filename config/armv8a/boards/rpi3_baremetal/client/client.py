@@ -4,7 +4,7 @@ Project: client
 Created Date: Friday August 27th 2021
 Author: Ronan (ronan.lashermes@inria.fr)
 -----
-Last Modified: Friday, 27th August 2021 4:52:48 pm
+Last Modified: Monday, 30th August 2021 11:04:07 am
 Modified By: Ronan (ronan.lashermes@inria.fr>)
 -----
 Copyright (c) 2021 INRIA
@@ -13,6 +13,8 @@ Copyright (c) 2021 INRIA
 import serial
 import numpy as np
 from termcolor import colored, cprint
+import sys
+import os
 
 class RPi:
     BAUD_RATE = 115200
@@ -90,4 +92,11 @@ if __name__ == '__main__':
 
     rpi.test()
     mat = rpi.benchmark()
-    np.savetxt("benchmark.csv", mat, delimiter=",",fmt='%s')
+    result_dir = "../results/"
+
+    if len(sys.argv) > 1:
+        bench = sys.argv[1]
+        os.makedirs(result_dir, exist_ok=True)
+        np.savetxt(result_dir + bench + "_matrix.csv", mat, delimiter=",",fmt='%s')
+    else:
+        np.savetxt("benchmark.csv", mat, delimiter=",",fmt='%s')

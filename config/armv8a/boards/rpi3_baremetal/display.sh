@@ -14,5 +14,5 @@ function gen_heatmap_fig {
 }
 
 gen_heatmap_fig "L1D" "l1d" 20 22
-# gen_heatmap_fig "L1I" "l1i" 0 30
-# gen_heatmap_fig "BHT" "bht" 4 22
+gen_heatmap_fig "L1I" "l1i" 0 300
+gen_heatmap_fig "BHT" "bht" 18 42
