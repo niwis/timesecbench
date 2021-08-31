@@ -7,9 +7,9 @@ using DataFrames
 using Evolutionary
 
 test_path = "../../../../../verilator/timesecbench/results/ubtb_matrix.csv"
-function load_timing_matrix(path::String)::Matrix{Int64}
+function load_timing_matrix(path::String)::Matrix{Float64}
     d = CSV.File(path; header=false) |> DataFrame
-    return Matrix{Int64}(d)
+    return Matrix{Float64}(d)
 end
 
 function find_channel_capacity(path::String)
@@ -17,7 +17,7 @@ function find_channel_capacity(path::String)
     find_channel_capacity(tm)
 end
 
-function find_channel_capacity(timing_matrix::Matrix{Int64})
+function find_channel_capacity(timing_matrix::Matrix{Float64})
     pm = tm2pm_min(timing_matrix)
     s = size(pm,2)
 
@@ -31,7 +31,7 @@ function find_channel_capacity(timing_matrix::Matrix{Int64})
     c(x) = [ sum(x) ] # negative values are zeroed
     lc   = [ 1.0 ] # lower bound for constraint function
     uc   = [ 1.0 ]   # upper bound for constraint function
-    con = WorstFitnessConstraints(lx, ux, lc, uc, c) # first parameter is a penalty value
+    con = WorstFitnessConstraints(lx, ux, lc, uc, c)
 
     ga = GA(populationSize  = 500,
             crossover       = uniformbin(0.1),
@@ -51,7 +51,13 @@ function find_channel_capacity(timing_matrix::Matrix{Int64})
     # confirmation evaluation
     c = capacity_eval(e.minimizer, pm)
 
-    println("Confirmation: $(round(c, digits=2))")
+    max_cap = log2(size(pm,1))
+    max_cap = round(max_cap, digits=2)
+
+    ratio = c/max_cap
+
+    println("Confirmation: $(round(c, digits=2)) ($(round(ratio, digits=2)))")
+    println("Max MI/capacity = $max_cap")
 end
 
 # function co(a::Vector{Float64}, b::Vector{Float64})::Vector{Float64}
@@ -115,7 +121,7 @@ function shannon_entropy(vector::Array{Int64,2})::Float64
     return -p
 end
 
-function tm2pm_min(tm::Array{Int64, 2})
+function tm2pm_min(tm::Array{Float64, 2})
     pm::Array{Float64, 2} = zeros(size(tm))
     mins = minimum(tm, dims=1)
 
@@ -168,11 +174,11 @@ end
 
 function mi_eval(path::String)
     d = CSV.File(path; header=false) |> DataFrame
-    tm = Matrix{Int64}(d)
+    tm = Matrix{Float64}(d)
     mi_eval(tm)
 end
 
-function mi_eval(timing_matrix::Matrix{Int64})
+function mi_eval(timing_matrix::Matrix{Float64})
     pm = tm2pm_min(timing_matrix)
     mi = pm2mi(pm)
 
@@ -181,7 +187,8 @@ function mi_eval(timing_matrix::Matrix{Int64})
     mi = round(mi, digits=2)
     max_mi = round(max_mi, digits=2)
 
-    println("MI = $mi/$max_mi ($ratio)")
+    println("MI = $mi ($ratio)")
+    println("Max MI/capacity = $max_mi")
     println()
 end
 

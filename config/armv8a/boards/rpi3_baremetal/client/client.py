@@ -4,7 +4,7 @@ Project: client
 Created Date: Friday August 27th 2021
 Author: Ronan (ronan.lashermes@inria.fr)
 -----
-Last Modified: Monday, 30th August 2021 11:04:07 am
+Last Modified: Tuesday, 31st August 2021 9:20:24 am
 Modified By: Ronan (ronan.lashermes@inria.fr>)
 -----
 Copyright (c) 2021 INRIA
@@ -15,6 +15,31 @@ import numpy as np
 from termcolor import colored, cprint
 import sys
 import os
+
+def timing_to_proba_min(tm):
+    pm = np.zeros(tm.shape)
+    mins = np.min(tm,0)
+
+    (nrows, ncols) = tm.shape
+
+    for c in range(ncols):
+        for r in range(nrows):
+            if tm[r,c] <= mins[c]:
+                pm[r,c] = 1.0
+            else:
+                pm[r,c] = 0.0
+
+
+    #normalize by column
+
+    # (rows, cols) = pm.shape
+    s = np.sum(pm)
+
+    if s != 0.0:
+        pm /= s
+
+
+    return pm
 
 class RPi:
     BAUD_RATE = 115200
@@ -86,17 +111,40 @@ class RPi:
         # print(mat)
         return mat
 
+    def intensity_benchmark(self, iterations = 1000):
+        mat = self.benchmark()
+        intens = np.zeros(mat.shape)
+
+        for i in range(iterations):
+            mat = self.benchmark()
+            pm = timing_to_proba_min(mat)
+            intens = np.add(intens, pm)
+        
+        return intens/iterations
+
+    def multi_benchmark(self, iterations = 1000):
+        mat = self.benchmark()
+
+        for i in range(iterations-1):
+            print("Benchmark " + str(i+1) + "/" + str(iterations))
+            mat = np.add(mat, self.benchmark())
+
+        return mat / iterations
+
 
 if __name__ == '__main__':
-    rpi = RPi("/dev/ttyUSB1", debug=False)
+    rpi = RPi("/dev/ttyUSB0", debug=False)
+    # print(sys.argv[0])
 
     rpi.test()
-    mat = rpi.benchmark()
-    result_dir = "../results/"
+    # mat = rpi.multi_benchmark()
+    mat = rpi.intensity_benchmark(100)
+    result_dir = "results/"
 
     if len(sys.argv) > 1:
         bench = sys.argv[1]
         os.makedirs(result_dir, exist_ok=True)
+        print("Saving...")
         np.savetxt(result_dir + bench + "_matrix.csv", mat, delimiter=",",fmt='%s')
     else:
         np.savetxt("benchmark.csv", mat, delimiter=",",fmt='%s')
