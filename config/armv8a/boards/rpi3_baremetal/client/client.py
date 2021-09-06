@@ -4,7 +4,7 @@ Project: client
 Created Date: Friday August 27th 2021
 Author: Ronan (ronan.lashermes@inria.fr)
 -----
-Last Modified: Tuesday, 31st August 2021 9:20:24 am
+Last Modified: Monday, 6th September 2021 11:02:32 am
 Modified By: Ronan (ronan.lashermes@inria.fr>)
 -----
 Copyright (c) 2021 INRIA
@@ -15,6 +15,7 @@ import numpy as np
 from termcolor import colored, cprint
 import sys
 import os
+import matplotlib.pyplot as plt
 
 def timing_to_proba_min(tm):
     pm = np.zeros(tm.shape)
@@ -116,6 +117,7 @@ class RPi:
         intens = np.zeros(mat.shape)
 
         for i in range(iterations):
+            print("Benchmark " + str(i) + "/" + str(iterations))
             mat = self.benchmark()
             pm = timing_to_proba_min(mat)
             intens = np.add(intens, pm)
@@ -133,12 +135,12 @@ class RPi:
 
 
 if __name__ == '__main__':
-    rpi = RPi("/dev/ttyUSB0", debug=False)
+    rpi = RPi("/dev/ttyUSB1", debug=False)
     # print(sys.argv[0])
 
     rpi.test()
-    # mat = rpi.multi_benchmark()
-    mat = rpi.intensity_benchmark(100)
+    mat = rpi.multi_benchmark(50)
+    mat_intensity = rpi.intensity_benchmark(50)
     result_dir = "results/"
 
     if len(sys.argv) > 1:
@@ -146,5 +148,6 @@ if __name__ == '__main__':
         os.makedirs(result_dir, exist_ok=True)
         print("Saving...")
         np.savetxt(result_dir + bench + "_matrix.csv", mat, delimiter=",",fmt='%s')
+        np.savetxt(result_dir + "i" + bench + "_matrix.csv", mat_intensity, delimiter=",",fmt='%s')
     else:
         np.savetxt("benchmark.csv", mat, delimiter=",",fmt='%s')

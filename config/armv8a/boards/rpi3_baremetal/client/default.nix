@@ -4,7 +4,7 @@
  * Created Date: Friday August 27th 2021
  * Author: Ronan (ronan.lashermes@inria.fr)
  * -----
- * Last Modified: Friday, 27th August 2021 4:40:58 pm
+ * Last Modified: Monday, 6th September 2021 10:02:23 am
  * Modified By: Ronan (ronan.lashermes@inria.fr>)
  * -----
  * Copyright (c) 2021 INRIA
@@ -32,6 +32,7 @@ stdenv.mkDerivation {
     python3Packages.pyserial
     python3Packages.numpy
     python3Packages.termcolor
+    python3Packages.matplotlib
     bash
   ];
 }
