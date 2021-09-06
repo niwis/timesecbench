@@ -4,7 +4,7 @@ Project: client
 Created Date: Friday August 27th 2021
 Author: Ronan (ronan.lashermes@inria.fr)
 -----
-Last Modified: Monday, 6th September 2021 11:02:32 am
+Last Modified: Monday, 6th September 2021 2:37:46 pm
 Modified By: Ronan (ronan.lashermes@inria.fr>)
 -----
 Copyright (c) 2021 INRIA
@@ -112,7 +112,7 @@ class RPi:
         # print(mat)
         return mat
 
-    def intensity_benchmark(self, iterations = 1000):
+    def intensity_benchmark(self, iterations = 100):
         mat = self.benchmark()
         intens = np.zeros(mat.shape)
 
@@ -121,15 +121,20 @@ class RPi:
             mat = self.benchmark()
             pm = timing_to_proba_min(mat)
             intens = np.add(intens, pm)
+            plt.imshow(intens, cmap='hot', interpolation='nearest')
+            plt.pause(0.05)
         
         return intens/iterations
 
-    def multi_benchmark(self, iterations = 1000):
+    def multi_benchmark(self, iterations = 100):
         mat = self.benchmark()
 
         for i in range(iterations-1):
             print("Benchmark " + str(i+1) + "/" + str(iterations))
             mat = np.add(mat, self.benchmark())
+            plt.imshow(mat, cmap='hot', interpolation='nearest')
+            plt.pause(0.05)
+        # plt.show()
 
         return mat / iterations
 
