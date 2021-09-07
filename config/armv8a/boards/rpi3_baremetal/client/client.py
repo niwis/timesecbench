@@ -140,12 +140,15 @@ class RPi:
 
 
 if __name__ == '__main__':
-    rpi = RPi("/dev/ttyUSB1", debug=False)
+    rpi = RPi("/dev/ttyUSB0", debug=False)
     # print(sys.argv[0])
 
+    plt.figure(figsize=(8, 6), dpi=200)
+
     rpi.test()
-    mat = rpi.multi_benchmark(50)
-    mat_intensity = rpi.intensity_benchmark(50)
+    mat = rpi.multi_benchmark(5)
+    mat_intensity = rpi.intensity_benchmark(5)
+    plt.show()
     result_dir = "results/"
 
     if len(sys.argv) > 1:
