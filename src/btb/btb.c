@@ -49,7 +49,7 @@ volatile void write_training_gadget() {
 void init_btb(WORD passes) {
     //1 - rewrite "j ret_zero" everywhere
     for(WORD i = 0; i < BTB_ENTRIES; i++) {
-        WORD* callsite = (WORD*) &(area.entries[i]);
+        INST* callsite = (INST*) &(area.entries[i]);
         *callsite = zero_jumps[i];
     }
 
@@ -69,7 +69,7 @@ void init_btb(WORD passes) {
 
 void touch_one_btb(WORD i) {
     //1 - rewrite "j ret_one"
-    volatile WORD* touch_add = &(area.entries[i]);
+    volatile INST* touch_add = &(area.entries[i]);
     *touch_add = one_jumps[i];
     instructions_fence();
 
@@ -85,7 +85,7 @@ void touch_one_btb(WORD i) {
 //Alignement is required for precise time measurement: we do not want the fetch to interfere.
 __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) TIMECOUNT poke_one_btb(WORD i) {
     // volatile uint32_t* address = (uint32_t*)((uint32_t)training_btb) + (i << 2);
-    volatile WORD* address = &(area.entries[i]);
+    volatile INST* address = &(area.entries[i]);
 
     //1 - rewrite "j ret_one"
     *address = one_jumps[i];

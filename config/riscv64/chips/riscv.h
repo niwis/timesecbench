@@ -17,7 +17,7 @@
 
 typedef void volatile* ADDRESS;
 typedef uint64_t TIMECOUNT;
-typedef uint32_t WORD; // if set to 64 bit, BTB benchmark doesn't work
+typedef uint64_t WORD;
 typedef uint32_t INST;
 
 #define RET_OPCODE      0x00008067  // opcode for "ret"
