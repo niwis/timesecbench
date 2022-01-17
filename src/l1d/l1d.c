@@ -12,10 +12,12 @@
 
 #include "support.h"
 #include "l1d.h"
+#include "uart.h"
 
 l1d_work_area area1;
 l1d_work_area area2;
 
+char print_text[50];
 
 volatile WORD touch_l1d_add(ADDRESS address) {
     return  *((WORD volatile*)address);
@@ -41,6 +43,10 @@ TIMECOUNT spy(WORD o) {
     //here o is a set index
     // return poke_l1d_add((void *) ((WORD)(&area2) + o*D_LINE_SIZE) );
     TIMECOUNT v = poke_l1d_add((void *) ((WORD)(&area2) + o*D_LINE_SIZE) );
+    // read out L2 misses
+    // uint32_t volatile L2_miss_count = *((uint32_t volatile*)L2_REG_MISS_COUNT);
+    // sprintf(print_text, "L2 miss count: %lu\r\n", L2_miss_count);
+    // print_uart(print_text);
     return v;
 }
 

@@ -20,7 +20,7 @@
 
 // L1D dimensions
 //l1d assumes RAM size >= 2*L1D size
-#define D_WAYS 64
+#define D_WAYS 128
 #define D_SETS 256
 #define D_LINE_SIZE 16 // in bytes
 #define L1D_SIZE (D_LINE_SIZE * D_WAYS * D_SETS)
@@ -37,5 +37,9 @@
 
 // BTB dimensions
 #define BTB_ENTRIES 8
+
+// L2 configuration registers (32 bits)
+#define L2_REG_MISS_COUNT 0x50000018
+#define L2_REG_HIT_COUNT 0x50000014
 
 #endif
