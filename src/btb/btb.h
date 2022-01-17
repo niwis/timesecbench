@@ -15,11 +15,13 @@
 
 #include "support.h"
 
+#define JUMP_ALIGNMENT 1  // HALF WORD size (4 bytes) alignment
+
 typedef volatile void sig_jump();
 
 // A structure of the size the number of btb entries + 1 (for last return instruction) where we can easily write instructions
 typedef volatile struct {
-    INST entries[BTB_ENTRIES+1];
+    INST entries[(BTB_ENTRIES * JUMP_ALIGNMENT)+1];
 } __attribute__ ((aligned (256))) //TODO: I get a bug with smaller alignments
 btb_work_area;
 
