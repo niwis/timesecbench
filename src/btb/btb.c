@@ -61,8 +61,10 @@ void init_btb(WORD passes) {
 
         for(WORD i = 0; i < BTB_ENTRIES; i++) {
             sig_jump* j = (sig_jump*)  &(area.entries[i * JUMP_ALIGNMENT]);
-            asm volatile (".align 6");
-            j();
+            asm volatile (".align 7");
+            asm volatile("auipc ra, 0;"
+                 "addi ra, ra, 10;"
+                 "jalr x0, %0;"::"r"(&(area.entries[i * JUMP_ALIGNMENT]))); // j();
         }
 
     }
@@ -76,8 +78,10 @@ void touch_one_btb(WORD i) {
 
     //2- execute jump
     sig_jump* j = (sig_jump*) touch_add;
-    asm volatile (".align 6");
-    j();
+    asm volatile (".align 7");
+    asm volatile("auipc ra, 0;"
+                 "addi ra, ra, 10;"
+                 "jalr x0, %0;"::"r"(touch_add)); // j();
 
     //3 - rewrite "j ret_zero"
     *touch_add = zero_jumps[i * JUMP_ALIGNMENT];
@@ -98,8 +102,10 @@ __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) TIMECOUNT pok
     //2 - measure time
     sig_jump* j = (sig_jump*) address;
     TIMECOUNT start = read_time();
-    asm volatile (".align 6");
-    j();
+    asm volatile (".align 7");
+    asm volatile("auipc ra, 0;"
+                 "addi ra, ra, 10;"
+                 "jalr x0, %0;"::"r"(address)); // j();
     TIMECOUNT end = read_time();
         
     //3 - rewrite "j ret_zero"
