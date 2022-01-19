@@ -36,7 +36,7 @@
 #define BHT_COUNTER_BITS    2 //to evaluate the number of passes for training
 
 // BTB dimensions
-#define BTB_ENTRIES 8
+#define BTB_ENTRIES 16
 
 // L2 configuration registers (32 bits)
 #define L2_REG_MISS_COUNT 0x50000018
