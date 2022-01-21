@@ -1,11 +1,12 @@
 
-.section ".init"
+.section .text.init
 
 
-.globl entry
-entry:  
+.globl _start
+_start:  
   la    sp, __stack_top
-  j _start
+#  j _start
+  j main
 
 
 
