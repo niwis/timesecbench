@@ -46,6 +46,11 @@ void print_uart(const char *str)
     }
 }
 
+void _putchar(char character)
+{
+    write_serial((uint8_t)character);
+}
+
 uint8_t bin_to_hex_table[16] = {
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
