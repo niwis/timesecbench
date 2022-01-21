@@ -23,6 +23,9 @@ void initialise_board (void) {
     print_uart("Init board\r\n");
     // Set CSR so we can use rdcycle from M mode.
     __asm__ volatile("csrwi 0x306, 0xf");
+    // Enable L2 performance counters
+    volatile uint64_t *L2_performance_counters_enable = ((volatile uint64_t*)L2_REG_PCNT_CFG);
+    *L2_performance_counters_enable = 1;
 }
 
 volatile void transmit(WORD i, WORD o, WORD timing) {

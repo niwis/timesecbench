@@ -38,8 +38,14 @@
 // BTB dimensions
 #define BTB_ENTRIES 16
 
-// L2 configuration registers (32 bits)
-#define L2_REG_MISS_COUNT 0x50000018
-#define L2_REG_HIT_COUNT 0x50000014
+// L2 configuration registers (64 bits)
+#define L2_REG_MISS_COUNT 0x50000030
+#define L2_REG_HIT_COUNT 0x50000028
+#define L2_REG_PCNT_CFG 0x50000010
+// L2 cache parameters
+#define L2_REG_SET_ASSO 0x50000060
+#define L2_REG_NO_LINES 0x50000068
+#define L2_REG_NO_BLOCKS 0x50000070
+
 
 #endif
