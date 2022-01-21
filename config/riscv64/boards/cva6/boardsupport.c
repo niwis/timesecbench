@@ -13,7 +13,8 @@
 #include "boardsupport.h"
 #include "support.h"
 #include "uart.h"
-#include <string.h>
+#include "printf.h"
+// #include <string.h>
 
 char transmit_text[50];
 

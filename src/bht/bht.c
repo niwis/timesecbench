@@ -85,7 +85,7 @@ void prepare_trojan() {
 
 void prepare_spy() {
     security_domain_switch(1);
-    asm volatile (".word 0xfffff00b"); // fence.t
+    // asm volatile (".word 0xfffff00b"); // fence.t
 }
 
 void initialise_benchmark() {
