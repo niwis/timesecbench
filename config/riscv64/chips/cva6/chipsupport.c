@@ -13,7 +13,8 @@
 #include "chipsupport.h"
 
 void security_domain_switch(unsigned int domain_id) {
-    dome_switch_in_place(domain_id);
+    // dome_switch_in_place(domain_id);
+    // asm volatile (".word 0xfffff00b"); // fence.t
 }
 
 void instructions_fence(void) {
