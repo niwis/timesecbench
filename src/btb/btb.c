@@ -79,7 +79,9 @@ void touch_one_btb(WORD i) {
     //2- execute jump
     sig_jump* j = (sig_jump*) touch_add;
     asm volatile (".align 7");
-    asm volatile("auipc ra, 0;"
+    // Pad out with a 4 byte nop to keep alignment with spy.
+    asm volatile(".word 0x13;"
+                 "auipc ra, 0;"
                  "addi ra, ra, 10;"
                  "jalr x0, %0;"::"r"(touch_add)); // j();
 
@@ -101,8 +103,8 @@ __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) TIMECOUNT pok
 
     //2 - measure time
     sig_jump* j = (sig_jump*) address;
-    TIMECOUNT start = read_time();
     asm volatile (".align 7");
+    TIMECOUNT start = read_time();
     asm volatile("auipc ra, 0;"
                  "addi ra, ra, 10;"
                  "jalr x0, %0;"::"r"(address)); // j();
