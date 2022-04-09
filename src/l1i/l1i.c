@@ -24,17 +24,20 @@ void prime_l1i() {
     // 2 - fill (one line per set) of the L1I cache with the instructions in this memory area
     
     // //first write rets
-    for(WORD s = 0; s < I_SETS; s++) {
-        area2.returns[s*I_LINE_SIZE] = RET_OPCODE;
+    for (int w = 0; w < I_WAYS; ++w) {
+        for(WORD s = 0; s < I_SETS; s++) {
+            area2.returns[s*4 + w*I_SETS*4] = RET_OPCODE;
+        }
     }
 
     instructions_fence();
 
     // then execute rets
     // printf("avant deuxième for\n");
-    for(WORD s = 0; s < I_SETS; s++) {
-        ((sig_fun*)&(area2.returns[s*I_LINE_SIZE]))();//convert address to function pointer, and call it
-
+    for (int w = 0; w < I_WAYS; ++w) {
+        for(WORD s = 0; s < I_SETS; s++) {
+            ((sig_fun*)&(area2.returns[s*4 + w*I_SETS*4]))();//convert address to function pointer, and call it
+        }
     }
     // printf("après deuxième for\n");
 }
@@ -45,6 +48,7 @@ void touch_l1i_add(sig_fun* address) {
 
 //Alignement is required for precise time measurement: we do not want the fetch to interfere.
 __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) volatile TIMECOUNT poke_l1i_add(sig_fun* address) {
+    // address(); // cache instruction
     TIMECOUNT start = read_time();
     address();
     TIMECOUNT end = read_time();
@@ -52,12 +56,12 @@ __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) volatile TIME
 }
 // try to communicate i to spy
 void trojan(WORD i) {
-    touch_l1i_add((void *) &(area1.returns[i * I_LINE_SIZE]) );
+    touch_l1i_add((void *) &(area1.returns[i * 4]) );
 }
 
 //try to read o in communication channel
 TIMECOUNT spy(WORD o) {
-    return poke_l1i_add((void *) &(area1.returns[o * I_LINE_SIZE]) );
+    return poke_l1i_add((void *) &(area1.returns[o * 4]) );
 
 }
 
@@ -72,11 +76,13 @@ void prepare_spy() {
     // asm volatile (".word 0xfffff00b"); // fence.t
 }
 
+// what about ways?
 void initialise_benchmark() {
 
-
-    for(WORD s = 0; s < I_SETS; s++) {
-        area1.returns[s*I_LINE_SIZE] = RET_OPCODE;
+    for (int w = 0; w < I_WAYS; ++w) {
+        for(WORD s = 0; s < I_SETS; s++) {
+            area1.returns[s*4 + w*I_SETS*4] = RET_OPCODE;
+        }
     }
 
     instructions_fence();
