@@ -21,6 +21,7 @@
 // - L1I_SIZE
 
 #define L1I_WORD_COUNT (L1I_SIZE/sizeof(INST))
+#define I_LINE_WORD_COUNT 4
 
 
 typedef void sig_fun(void);

@@ -18,28 +18,13 @@ l1i_work_area area2;
 
 
 
-void prime_l1i() {
-    // the goal is:
-    // 1 - fill an empty region of memory with ret instructions (0x00008067), that can be used to fill (one line per set) the cache
-    // 2 - fill (one line per set) of the L1I cache with the instructions in this memory area
-    
-    // //first write rets
+void prime_l1i() {    
+    // execute rets
     for (int w = 0; w < I_WAYS; ++w) {
         for(WORD s = 0; s < I_SETS; s++) {
-            area2.returns[s*4 + w*I_SETS*4] = RET_OPCODE;
+            ((sig_fun*)&(area2.returns[s*I_LINE_WORD_COUNT + w*I_SETS*I_LINE_WORD_COUNT]))();//convert address to function pointer, and call it
         }
     }
-
-    instructions_fence();
-
-    // then execute rets
-    // printf("avant deuxième for\n");
-    for (int w = 0; w < I_WAYS; ++w) {
-        for(WORD s = 0; s < I_SETS; s++) {
-            ((sig_fun*)&(area2.returns[s*4 + w*I_SETS*4]))();//convert address to function pointer, and call it
-        }
-    }
-    // printf("après deuxième for\n");
 }
 
 void touch_l1i_add(sig_fun* address) {
@@ -56,13 +41,12 @@ __attribute__ ((aligned (I_LINE_SIZE))) __attribute__ ((noinline)) volatile TIME
 }
 // try to communicate i to spy
 void trojan(WORD i) {
-    touch_l1i_add((void *) &(area1.returns[i * 4]) );
+    touch_l1i_add((void *) &(area1.returns[i * I_LINE_WORD_COUNT]) );
 }
 
 //try to read o in communication channel
 TIMECOUNT spy(WORD o) {
-    return poke_l1i_add((void *) &(area1.returns[o * 4]) );
-
+    return poke_l1i_add((void *) &(area1.returns[o * I_LINE_WORD_COUNT]) );
 }
 
 void prepare_trojan() {
@@ -76,15 +60,13 @@ void prepare_spy() {
     // asm volatile (".word 0xfffff00b"); // fence.t
 }
 
-// what about ways?
 void initialise_benchmark() {
-
     for (int w = 0; w < I_WAYS; ++w) {
         for(WORD s = 0; s < I_SETS; s++) {
-            area1.returns[s*4 + w*I_SETS*4] = RET_OPCODE;
+            area1.returns[s*I_LINE_WORD_COUNT + w*I_SETS*I_LINE_WORD_COUNT] = RET_OPCODE;
+            area2.returns[s*I_LINE_WORD_COUNT + w*I_SETS*I_LINE_WORD_COUNT] = RET_OPCODE;
         }
     }
-
     instructions_fence();
 }
 
