@@ -19,7 +19,7 @@
 
 volatile inline uint64_t read_time() {
     uint64_t rv;
-    __asm__ volatile ("rdcycle %0": "=r" (rv) ::);
+    __asm__ volatile ("csrr %0, mcycle": "=r" (rv) ::);
     return rv;
 }
 
